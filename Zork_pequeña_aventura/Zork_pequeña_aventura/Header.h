@@ -50,6 +50,9 @@ public:
 
 int finish_game(char[]);
 
+void looking(Player&, Exit*);
+void looking_exits(char[], Player*, Exit*);
+
 void ToDo(int *, char[], char[], Player*, Rooms*, Exit*);
 
 #endif

@@ -60,7 +60,7 @@ int finish_game(char first_word[]){
 void ToDo(int *previous_room, char first_word[], char second_word[], Player* player, Rooms* actualroom, Exit* exits)
 {
 	int equal_help[2] = { strcmp(first_word, "help"), strcmp(first_word, "Help") };  //This vector has a 0 if first_word == help, or first_word == Help
-
+	int equal_look[2] = { strcmp(first_word, "look"), strcmp(first_word, "Look") };
 
 	if (equal_help[0] == 0 || equal_help[1] == 0){
 		printf("Welcome to Zork\nControls:\n-To exit type quit\n-To move you can use comand go.\nexample : go north, go south, go east, go west, go up, go down.\n\n");
@@ -68,5 +68,46 @@ void ToDo(int *previous_room, char first_word[], char second_word[], Player* pla
 		printf(" You can also look only an exit, looking the direction.\nexample : look room, look north, look east...\n\n-Somewhere there will be closed doors, use open to pass or\n");
 		printf(" close to close the door you actually open.\nexample : open north, open south, open up, close south...\n\n");
 		getchar();
+	}
+
+
+	if (equal_look[0] == 0 || equal_look[1] == 0){
+
+		if (second_word != NULL){
+			looking_exits(second_word, player, exits);
+		}
+
+		else looking(*player, exits);
+	}
+
+}
+
+void looking(Player& player, Exit* exits)
+{
+	printf("%s\n", player.player_room->room_name);
+	printf("%s\n", player.player_room->room_description);
+	printf("There is an exit going:");
+	for (int j = 0; j < 25; j++){
+		if ((exits + j)->origen == player.player_room){
+			printf(" %s, ", (exits + j)->direction);
+		}
+		
+	}
+	printf("\n");
+
+}
+
+void looking_exits(char second_word[], Player* player, Exit* exits){
+	int counter = 0;	//if counter == 0 at the end of the loop there isn't a room in the direction said								
+	for (int j = 0; j < 25; j++){
+		int equal = strcmp(second_word, (exits + j)->direction);
+
+		if ((exits + j)->origen == player->player_room && equal == 0){
+			printf("%s\n", (exits + j)->exit_name);
+			counter++;
+		}
+	}
+	if (counter == 0){
+		printf("there isn't any exits in this direction\n");
 	}
 }
