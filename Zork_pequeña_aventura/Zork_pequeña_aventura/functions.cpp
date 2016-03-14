@@ -170,6 +170,7 @@ void movement(char first_word[], Player* player, Exit* exits){
 
 		}
 		else if ((exits + j)->open == false && (exits + j)->origen == player->player_room){
+			(exits + j)->open = false;
 			door_closed++;
 		}
 		
@@ -228,7 +229,7 @@ void open_close_door(char first_word[], char second_word[], Player* player, Exit
 				}
 				else
 				{
-					(exits + j)->open = true;
+					(exits + j)->open = false;
 					printf("The path is closed\n");
 				}
 				counter_close++;
