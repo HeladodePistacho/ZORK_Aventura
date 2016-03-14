@@ -38,7 +38,7 @@ public:
 	World(){
 		player = new Player;
 		rooms = new Rooms[13];
-		exits = new Exit[25];
+		exits = new Exit[26];
 	}
 	~World(){
 		delete player;
@@ -51,8 +51,11 @@ public:
 int finish_game(char[]);
 
 void looking(Player&, Exit*);
+
 void looking_exits(char[], Player*, Exit*);
 
-void ToDo(int *, char[], char[], Player*, Rooms*, Exit*);
+void movement(char[], Player*, Exit*);
+
+void ToDo(char[], char[], Player*, Rooms*, Exit*);
 
 #endif

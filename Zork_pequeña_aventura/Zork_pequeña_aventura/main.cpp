@@ -13,7 +13,7 @@ int main()
 	char* first_word;
 	char* second_word;
 	int finish;
-	int previous_room = 2;
+	
 
 
 	World map;
@@ -24,14 +24,14 @@ int main()
 	do
 	{
 
-		printf("What do you want to do?\n");
+		printf("What's your next action?\n");
 		gets(action);
 
 		second_word = strtok(action, break_action);
 		first_word = second_word;
 		second_word = strtok(NULL, break_action);
 
-		ToDo(&previous_room, first_word, second_word, map.player, map.rooms, map.exits);
+		ToDo(first_word, second_word, map.player, map.rooms, map.exits);
 
 		finish = finish_game(first_word);
 

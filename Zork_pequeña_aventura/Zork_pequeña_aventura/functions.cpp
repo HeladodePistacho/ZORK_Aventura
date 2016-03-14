@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[25])
+void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[26])
 {
 	rooms[0] = { "Center of the room", "A lightly place in the middle of the room, there's nothing interesting to do, but you can go everywhere from here" };
 	rooms[1] = { "In Front of the Heater", "A warm place under some book shelves, between the wardrobe and the desk" };
@@ -25,7 +25,7 @@ void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[25])
 	exits[1] = { "From the center of the room to the front of the wardrobe", (rooms + 0), (rooms + 3), "east", true };
 	exits[2] = { "From the center of the room to under the bed", (rooms + 0), (rooms + 8), "south", true };
 	exits[3] = { "From the front of the wardrobe to the center of the room", (rooms + 3), (rooms + 0), "west", true };
-	exits[4] = { "From the front of the wardrobe to under the wardrobe", (rooms + 3), (rooms + 2), "nort", true };
+	exits[4] = { "From the front of the wardrobe to under the wardrobe", (rooms + 3), (rooms + 2), "north", true };
 	exits[5] = { "From the front of the wardrobe to behind the door", (rooms + 3), (rooms + 4), "south", true };
 	exits[6] = { "From under the wardrobe to in front of it", (rooms + 2), (rooms + 3), "south", true };
 	exits[7] = { "From under the wardrobe to in front of the heater", (rooms + 2), (rooms + 1), "west", true };
@@ -40,12 +40,13 @@ void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[25])
 	exits[16] = { "From under the bed to the mouse cave", (rooms + 8), (rooms + 10), "south", false };
 	exits[17] = { "From under the bed to the bed", (rooms + 8), (rooms + 9), "up", true };
 	exits[18] = { "From the bed to the bedside table", (rooms + 9), (rooms + 11), "west", true };
-	exits[19] = { "From the bedside table to the bed", (rooms + 9), (rooms + 8), "east", true };
+	exits[19] = { "From the bedside table to the bed", (rooms + 11), (rooms + 9), "east", true };
 	exits[20] = { "From the mouse cave to under the bed", (rooms + 10), (rooms + 8), "north", true };
 	exits[21] = { "From behind the door to the front of the wardrobe", (rooms + 4), (rooms + 3), "north", true };
 	exits[22] = { "From the books shelves to above the wardrobe", (rooms + 5), (rooms + 12), "east", true };
 	exits[23] = { "From the books shelves to the desk", (rooms + 5), (rooms + 7), "west", true };
 	exits[24] = { "From the above the wardrobe to the bookshelves", (rooms + 7), (rooms + 5), "west", true };
+	exits[25] = { "From the Bed to under the bed", (rooms + 9), (rooms + 8), "down", true };
 }
 
 int finish_game(char first_word[]){
@@ -57,10 +58,12 @@ int finish_game(char first_word[]){
 	else return 0;
 }
 
-void ToDo(int *previous_room, char first_word[], char second_word[], Player* player, Rooms* actualroom, Exit* exits)
+void ToDo(char first_word[], char second_word[], Player* player, Rooms* actualroom, Exit* exits)
 {
 	int equal_help[2] = { strcmp(first_word, "help"), strcmp(first_word, "Help") };  //This vector has a 0 if first_word == help, or first_word == Help
 	int equal_look[2] = { strcmp(first_word, "look"), strcmp(first_word, "Look") };
+	int equal_directions[12] = { strcmp(first_word, "north"), strcmp(first_word, "n"), strcmp(first_word, "south"), strcmp(first_word, "s"), strcmp(first_word, "west"), strcmp(first_word, "w"), strcmp(first_word, "east"), strcmp(first_word, "e"), strcmp(first_word, "up"), strcmp(first_word, "u"), strcmp(first_word, "down"), strcmp(first_word, "d") };
+	int equal_go[2] = { strcmp(first_word, "go"), strcmp(first_word, "Go") };
 
 	if (equal_help[0] == 0 || equal_help[1] == 0){
 		printf("Welcome to Zork\nControls:\n-To exit type quit\n-To move you can use comand go.\nexample : go north, go south, go east, go west, go up, go down.\n\n");
@@ -80,6 +83,20 @@ void ToDo(int *previous_room, char first_word[], char second_word[], Player* pla
 		else looking(*player, exits);
 	}
 
+
+	if (equal_go[0] == 0 || equal_go[1] == 0){
+		movement(second_word, player, exits);
+	}
+	else{
+		for (int i = 0; i < 12; i++){
+			if (equal_directions[i] == 0){
+				movement(first_word, player, exits);
+			}
+		}
+	}
+
+
+
 }
 
 void looking(Player& player, Exit* exits)
@@ -87,7 +104,7 @@ void looking(Player& player, Exit* exits)
 	printf("%s\n", player.player_room->room_name);
 	printf("%s\n", player.player_room->room_description);
 	printf("There is an exit going:");
-	for (int j = 0; j < 25; j++){
+	for (int j = 0; j < 26; j++){
 		if ((exits + j)->origen == player.player_room){
 			printf(" %s, ", (exits + j)->direction);
 		}
@@ -99,7 +116,7 @@ void looking(Player& player, Exit* exits)
 
 void looking_exits(char second_word[], Player* player, Exit* exits){
 	int counter = 0;	//if counter == 0 at the end of the loop there isn't a room in the direction said								
-	for (int j = 0; j < 25; j++){
+	for (int j = 0; j < 26; j++){
 		int equal = strcmp(second_word, (exits + j)->direction);
 
 		if ((exits + j)->origen == player->player_room && equal == 0){
@@ -109,5 +126,26 @@ void looking_exits(char second_word[], Player* player, Exit* exits){
 	}
 	if (counter == 0){
 		printf("there isn't any exits in this direction\n");
+	}
+}
+
+void movement(char first_word[], Player* player, Exit* exits){
+
+	int equal_direction;
+	int counter = 0;
+
+	for (int j = 0; j < 26; j++){
+		equal_direction = strcmp(first_word, (exits + j)->direction);
+
+		if ((exits + j)->origen == player->player_room && equal_direction == 0){
+			player->player_room = (exits + j)->destiny;
+			printf("%s\n", player->player_room->room_name);
+			counter++;
+			break;
+		}
+
+	}
+	if (counter == 0){
+		printf("You can't go this way\n");
 	}
 }
