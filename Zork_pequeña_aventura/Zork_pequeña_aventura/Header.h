@@ -1,17 +1,19 @@
 #ifndef CLASSANDFUNCTIONS
 #define CLASSANDUNCTIONS
 
-class Player
-{
-public:
-	Rooms* player_room;
-};
+
 
 class Rooms
 {
 public:
 	char room_name[25];
 	char room_description[150];
+};
+
+class Player
+{
+public:
+	Rooms *player_room;
 };
 
 class Exit
@@ -45,5 +47,9 @@ public:
 	}
 	void CreateWorld(Player&, Rooms[], Exit[]);
 };
+
+int finish_game(char[]);
+
+void ToDo(int *, char[], char[], Player*, Rooms*, Exit*);
 
 #endif

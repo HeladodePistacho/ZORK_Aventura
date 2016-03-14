@@ -11,7 +11,7 @@ void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[25])
 	rooms[3] = { "Front of the wardrobe", "A large and empty place in front of your home" };
 	rooms[4] = { "Behind the Door", "A really dark place, you will need something to watch if there's something in front of you" };
 	rooms[5] = { "Book Shelves", "A high place with some adventure books and comics, high enough to reach the wardrobe top" };
-	rooms[6] = { "Under the Desk", , "A shadowy place, home of Rusty the old man, you can also reach some drawers from here" };
+	rooms[6] = { "Under the Desk", "A shadowy place, home of Rusty the old man, you can also reach some drawers from here" };
 	rooms[7] = { "Desk", "A lightly place next to the window with a half-eated sandwich, a laptop and some jambled stuff" };
 	rooms[8] = { "Under the Bed", "This place is a mess, really dirty and full of dust, you can also see a tiny door" };
 	rooms[9] = { "Bed", "Really soft and comfortable place, the bedside table seems reacheable from here" };
@@ -46,4 +46,27 @@ void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[25])
 	exits[22] = { "From the books shelves to above the wardrobe", (rooms + 5), (rooms + 12), "east", true };
 	exits[23] = { "From the books shelves to the desk", (rooms + 5), (rooms + 7), "west", true };
 	exits[24] = { "From the above the wardrobe to the bookshelves", (rooms + 7), (rooms + 5), "west", true };
+}
+
+int finish_game(char first_word[]){
+	int equal_quit[2] = { strcmp(first_word, "quit"), strcmp(first_word, "Quit") };
+
+	if (equal_quit[0] == 0 || equal_quit[1] == 0){
+		return 1;
+	}
+	else return 0;
+}
+
+void ToDo(int *previous_room, char first_word[], char second_word[], Player* player, Rooms* actualroom, Exit* exits)
+{
+	int equal_help[2] = { strcmp(first_word, "help"), strcmp(first_word, "Help") };  //This vector has a 0 if first_word == help, or first_word == Help
+
+
+	if (equal_help[0] == 0 || equal_help[1] == 0){
+		printf("Welcome to Zork\nControls:\n-To exit type quit\n-To move you can use comand go.\nexample : go north, go south, go east, go west, go up, go down.\n\n");
+		printf("-To look the room where you are use look and the direction.\n It will says how it is the room where you are and the\n exits that it have.\n");
+		printf(" You can also look only an exit, looking the direction.\nexample : look room, look north, look east...\n\n-Somewhere there will be closed doors, use open to pass or\n");
+		printf(" close to close the door you actually open.\nexample : open north, open south, open up, close south...\n\n");
+		getchar();
+	}
 }
