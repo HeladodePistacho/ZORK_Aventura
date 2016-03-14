@@ -1,8 +1,6 @@
 #ifndef CLASSANDFUNCTIONS
 #define CLASSANDUNCTIONS
 
-
-
 class Rooms
 {
 public:
@@ -55,6 +53,10 @@ void looking(Player&, Exit*);
 void looking_exits(char[], Player*, Exit*);
 
 void movement(char[], Player*, Exit*);
+
+void open_close_door(char[], char[], Player*, Exit*);
+
+void change_directions(char*[]);
 
 void ToDo(char[], char[], Player*, Rooms*, Exit*);
 

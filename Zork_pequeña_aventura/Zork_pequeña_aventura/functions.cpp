@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+
+//This method creates the player, the rooms array and the exits array.
 void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[26])
 {
 	rooms[0] = { "Center of the room", "A lightly place in the middle of the room, there's nothing interesting to do, but you can go everywhere from here" };
@@ -21,34 +23,36 @@ void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[26])
 
 	player.player_room = (rooms + 2);
 
-	exits[0] = { "From the center of the room to the front of the heater", (rooms + 0), (rooms + 1), "north", true };
-	exits[1] = { "From the center of the room to the front of the wardrobe", (rooms + 0), (rooms + 3), "east", true };
-	exits[2] = { "From the center of the room to under the bed", (rooms + 0), (rooms + 8), "south", true };
-	exits[3] = { "From the front of the wardrobe to the center of the room", (rooms + 3), (rooms + 0), "west", true };
-	exits[4] = { "From the front of the wardrobe to under the wardrobe", (rooms + 3), (rooms + 2), "north", true };
-	exits[5] = { "From the front of the wardrobe to behind the door", (rooms + 3), (rooms + 4), "south", true };
-	exits[6] = { "From under the wardrobe to in front of it", (rooms + 2), (rooms + 3), "south", true };
-	exits[7] = { "From under the wardrobe to in front of the heater", (rooms + 2), (rooms + 1), "west", true };
-	exits[8] = { "From in front of the heater to under the wardrobe", (rooms + 1), (rooms + 2), "east", true };
-	exits[9] = { "From in front of the heater to the center of the room", (rooms + 1), (rooms + 0), "south", true };
-	exits[10] = { "From in front of the heater to under the desk", (rooms + 1), (rooms + 6), "west", true };
-	exits[11] = { "From under the desk to the front of the heater", (rooms + 6), (rooms + 1), "east", true };
-	exits[12] = { "From under the desk to the desk", (rooms + 6), (rooms + 7), "up", false };
-	exits[13] = { "From the desk to the book shelves", (rooms + 7), (rooms + 5), "east", true };
-	exits[14] = { "From the desk to under the desk", (rooms + 7), (rooms + 6), "down", true };
-	exits[15] = { "From under the bed to the center of the room", (rooms + 8), (rooms + 0), "north", true };
-	exits[16] = { "From under the bed to the mouse cave", (rooms + 8), (rooms + 10), "south", false };
-	exits[17] = { "From under the bed to the bed", (rooms + 8), (rooms + 9), "up", true };
-	exits[18] = { "From the bed to the bedside table", (rooms + 9), (rooms + 11), "west", true };
-	exits[19] = { "From the bedside table to the bed", (rooms + 11), (rooms + 9), "east", true };
-	exits[20] = { "From the mouse cave to under the bed", (rooms + 10), (rooms + 8), "north", true };
-	exits[21] = { "From behind the door to the front of the wardrobe", (rooms + 4), (rooms + 3), "north", true };
-	exits[22] = { "From the books shelves to above the wardrobe", (rooms + 5), (rooms + 12), "east", true };
-	exits[23] = { "From the books shelves to the desk", (rooms + 5), (rooms + 7), "west", true };
-	exits[24] = { "From the above the wardrobe to the bookshelves", (rooms + 7), (rooms + 5), "west", true };
-	exits[25] = { "From the Bed to under the bed", (rooms + 9), (rooms + 8), "down", true };
+	exits[0] = { "You will go in front of the heater", (rooms + 0), (rooms + 1), "north", true };
+	exits[1] = { "You will go in front of the wardrobe", (rooms + 0), (rooms + 3), "east", true };
+	exits[2] = { "You will go inside the darkness of under the bed", (rooms + 0), (rooms + 8), "south", true };
+	exits[3] = { "You will go the centre of the room", (rooms + 3), (rooms + 0), "west", true };
+	exits[4] = { "That's the way to your home", (rooms + 3), (rooms + 2), "north", true };
+	exits[5] = { "The path will get darker as you get closer the door", (rooms + 3), (rooms + 4), "south", true };
+	exits[6] = { "This is the south exit of your home", (rooms + 2), (rooms + 3), "south", true };
+	exits[7] = { "This is the west exit of your home, to the warm heater", (rooms + 2), (rooms + 1), "west", true };
+	exits[8] = { "This is the east way to your home", (rooms + 1), (rooms + 2), "east", true };
+	exits[9] = { "This path will get you into the centre of the room", (rooms + 1), (rooms + 0), "south", true };
+	exits[10] = { "A dark and wet path to under the desk", (rooms + 1), (rooms + 6), "west", true };
+	exits[11] = { "A dark and warm path to the heater", (rooms + 6), (rooms + 1), "east", true };
+	exits[12] = { "You could go this way if the drawers were open", (rooms + 6), (rooms + 7), "up", false };
+	exits[13] = { "A scary jump to reach the book shelves", (rooms + 7), (rooms + 5), "east", true };
+	exits[14] = { "You can descend using the drawers as a stairs", (rooms + 7), (rooms + 6), "down", true };
+	exits[15] = { "This path is getting you to the centre of the room", (rooms + 8), (rooms + 0), "north", true };
+	exits[16] = { "This path is full of animal hair", (rooms + 8), (rooms + 10), "south", false };
+	exits[17] = { "You can climb to the bed using the bed sheet", (rooms + 8), (rooms + 9), "up", true };
+	exits[18] = { "it seems that you can reach the bedside table", (rooms + 9), (rooms + 11), "west", true };
+	exits[19] = { "This will return you to the bed", (rooms + 11), (rooms + 9), "east", true };
+	exits[20] = { "The path conects the stinky mouse cave with the under the bed", (rooms + 10), (rooms + 8), "north", true };
+	exits[21] = { "A path that is getting shinnier as you approach the wardrobe", (rooms + 4), (rooms + 3), "north", true };
+	exits[22] = { "A scarier jump to the above wardrobe", (rooms + 5), (rooms + 12), "east", true };
+	exits[23] = { "A jump to the desk", (rooms + 5), (rooms + 7), "west", true };
+	exits[24] = { "A jump from the dusty wardrobe to the bookshelves", (rooms + 12), (rooms + 5), "west", true };
+	exits[25] = { "You can descend using the same bed sheet that you used to get here", (rooms + 9), (rooms + 8), "down", true };
+
 }
 
+//This function looks if first_word == quit, if it is returns 1, and that finish the game.
 int finish_game(char first_word[]){
 	int equal_quit[2] = { strcmp(first_word, "quit"), strcmp(first_word, "Quit") };
 
@@ -58,12 +62,14 @@ int finish_game(char first_word[]){
 	else return 0;
 }
 
-void ToDo(char first_word[], char second_word[], Player* player, Rooms* actualroom, Exit* exits)
-{
+//This is the big function that have all the others, it compares the strings and do what is asked to do.
+void ToDo(char first_word[], char second_word[], Player* player, Rooms* actualroom, Exit* exits){
+
 	int equal_help[2] = { strcmp(first_word, "help"), strcmp(first_word, "Help") };  //This vector has a 0 if first_word == help, or first_word == Help
 	int equal_look[2] = { strcmp(first_word, "look"), strcmp(first_word, "Look") };
 	int equal_directions[12] = { strcmp(first_word, "north"), strcmp(first_word, "n"), strcmp(first_word, "south"), strcmp(first_word, "s"), strcmp(first_word, "west"), strcmp(first_word, "w"), strcmp(first_word, "east"), strcmp(first_word, "e"), strcmp(first_word, "up"), strcmp(first_word, "u"), strcmp(first_word, "down"), strcmp(first_word, "d") };
 	int equal_go[2] = { strcmp(first_word, "go"), strcmp(first_word, "Go") };
+	int equal_open_close[4] = { strcmp(first_word, "open"), strcmp(first_word, "Open"), strcmp(first_word, "close"), strcmp(first_word, "Close") };
 
 	if (equal_help[0] == 0 || equal_help[1] == 0){
 		printf("Welcome to Zork\nControls:\n-To exit type quit\n-To move you can use comand go.\nexample : go north, go south, go east, go west, go up, go down.\n\n");
@@ -95,10 +101,17 @@ void ToDo(char first_word[], char second_word[], Player* player, Rooms* actualro
 		}
 	}
 
-
-
+	if (equal_open_close[0] == 0 || equal_open_close[1] == 0 || equal_open_close[2] == 0 || equal_open_close[3] == 0)
+	{
+		if (second_word != NULL)
+		{
+			open_close_door(first_word, second_word, player, exits);
+		}
+		else printf("I need a direction using this comand\n");
+	}
 }
 
+//This prints the room name and the description of where you are, and it's exits directions
 void looking(Player& player, Exit* exits)
 {
 	printf("%s\n", player.player_room->room_name);
@@ -108,12 +121,13 @@ void looking(Player& player, Exit* exits)
 		if ((exits + j)->origen == player.player_room){
 			printf(" %s, ", (exits + j)->direction);
 		}
-		
+
 	}
 	printf("\n");
 
 }
 
+//This will give the description of the exit asked
 void looking_exits(char second_word[], Player* player, Exit* exits){
 	int counter = 0;	//if counter == 0 at the end of the loop there isn't a room in the direction said								
 	for (int j = 0; j < 26; j++){
@@ -129,23 +143,127 @@ void looking_exits(char second_word[], Player* player, Exit* exits){
 	}
 }
 
+//This looks if the path is open or closed. If it is open, then search for the exit with the direction you asked for 
+//and changes the player_room for the destiny room of the exit and prints it name. If it is close don't let you pass
 void movement(char first_word[], Player* player, Exit* exits){
 
+	int door_closed = 0;
 	int equal_direction;
 	int counter = 0;
+
+	change_directions(&first_word);
+	
+
 
 	for (int j = 0; j < 26; j++){
 		equal_direction = strcmp(first_word, (exits + j)->direction);
 
-		if ((exits + j)->origen == player->player_room && equal_direction == 0){
-			player->player_room = (exits + j)->destiny;
-			printf("%s\n", player->player_room->room_name);
-			counter++;
-			break;
-		}
+		if ((exits + j)->open == true && (exits + j)->origen == player->player_room)
+		{
 
+			if ((exits + j)->origen == player->player_room && equal_direction == 0){
+				player->player_room = (exits + j)->destiny;
+				printf("%s\n", player->player_room->room_name);
+				counter++;
+				break;
+			}
+
+		}
+		else if ((exits + j)->open == false && (exits + j)->origen == player->player_room){
+			door_closed++;
+		}
+		
 	}
-	if (counter == 0){
+	if (door_closed != 0){
+		printf("You can't go this way, the path is closed\n");
+	}
+	else if (counter == 0){
 		printf("You can't go this way\n");
 	}
+}
+
+//This function lets the player open and close paths changing the boolen open from the exits
+void open_close_door(char first_word[], char second_word[], Player* player, Exit* exits){
+
+	int open = strcmp(first_word, "open");
+	int close = strcmp(first_word, "close");
+	int counter_open = 0;
+	int counter_close = 0;
+
+
+	if (open == 0){						//this part of the code search for an exit which is in the same room of the player and the same direction introduced
+		for (int j = 0; j < 26; j++)	//If it is found the boolean changes to true(open) and if it is not it prints an error 
+		{
+			int equal_direction = strcmp(second_word, (exits + j)->direction);
+			if ((exits + j)->origen == player->player_room && equal_direction == 0)
+			{
+				if ((exits + j)->open == true)
+				{
+					printf("This path is already open\n");
+				}
+				else 
+				{
+					(exits + j)->open = true;
+					printf("The path is open\n");
+				}
+				counter_open++;
+			}
+
+		}
+		if (counter_open == 0)
+		{
+			printf("There is nothing to open this way\n");
+		}
+	}
+
+	if (close == 0){						//Does exactly the same than the open one but closing the boolean (false)
+		for (int j = 0; j < 26; j++)
+		{
+			int equal_direction = strcmp(second_word, (exits + j)->direction);
+			if ((exits + j)->origen == player->player_room && equal_direction == 0)
+			{
+				if ((exits + j)->open == false)
+				{
+					printf("This path is already closed\n");
+				}
+				else
+				{
+					(exits + j)->open = true;
+					printf("The path is closed\n");
+				}
+				counter_close++;
+			}
+
+		}
+		if (counter_close == 0)
+		{
+			printf("There is nothing to close this way\n");
+		}
+	}
+
+}
+
+//This allows the player to type only n/s/w/e/u/d to move
+void change_directions(char* first_word[]){
+	int short_directions[6] = { strcmp(*first_word, "n"), strcmp(*first_word, "s"), strcmp(*first_word, "w"), strcmp(*first_word, "e"), strcmp(*first_word, "u"), strcmp(*first_word, "d") };
+
+	if (short_directions[0] == 0){
+		*first_word = "north";
+	}
+	if (short_directions[1] == 0){
+		*first_word = "south";
+	}
+	if (short_directions[2] == 0){
+		*first_word = "west";
+	}
+	if (short_directions[3] == 0){
+		*first_word = "east";
+	}
+	if (short_directions[4] == 0){
+		*first_word = "up";
+	}
+	if (short_directions[5] == 0){
+		*first_word = "down";
+	}
+
 }

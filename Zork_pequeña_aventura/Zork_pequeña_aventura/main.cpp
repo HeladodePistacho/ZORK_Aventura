@@ -14,26 +14,24 @@ int main()
 	char* second_word;
 	int finish;
 	
-
-
 	World map;
 	map.CreateWorld(*map.player, map.rooms, map.exits);
-
 	printf("You are %s\n Good luck\n", (map.rooms[2].room_name));
 
 	do
 	{
+		do{
+			printf("What's your next action?\n");
+			gets(action);
 
-		printf("What's your next action?\n");
-		gets(action);
+			second_word = strtok(action, break_action);
+			first_word = second_word;
+			second_word = strtok(NULL, break_action);
 
-		second_word = strtok(action, break_action);
-		first_word = second_word;
-		second_word = strtok(NULL, break_action);
+		} while (first_word == NULL);
 
-		ToDo(first_word, second_word, map.player, map.rooms, map.exits);
-
-		finish = finish_game(first_word);
+			ToDo(first_word, second_word, map.player, map.rooms, map.exits);
+			finish = finish_game(first_word);
 
 	} while (finish == 0);
 
