@@ -46,7 +46,7 @@ public:
 	void CreateWorld(Player&, Rooms[], Exit[]);
 };
 
-int finish_game(char[]);
+bool finish_game(char[]);
 
 void looking(Player&, Exit*);
 

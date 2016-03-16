@@ -53,17 +53,19 @@ void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[26])
 }
 
 //This function looks if first_word == quit, if it is returns 1, and that finish the game.
-int finish_game(char first_word[]){
+bool finish_game(char first_word[]) 
+{
 	int equal_quit[2] = { strcmp(first_word, "quit"), strcmp(first_word, "Quit") };
 
 	if (equal_quit[0] == 0 || equal_quit[1] == 0){
-		return 1;
+		return true;
 	}
-	else return 0;
+	else return false;
 }
 
 //This is the big function that have all the others, it compares the strings and do what is asked to do.
-void ToDo(char first_word[], char second_word[], Player* player, Rooms* actualroom, Exit* exits){
+void ToDo(char first_word[], char second_word[], Player* player, Rooms* actualroom, Exit* exits) 
+{
 
 	int equal_help[2] = { strcmp(first_word, "help"), strcmp(first_word, "Help") };  //This vector has a 0 if first_word == help, or first_word == Help
 	int equal_look[2] = { strcmp(first_word, "look"), strcmp(first_word, "Look") };
@@ -76,7 +78,7 @@ void ToDo(char first_word[], char second_word[], Player* player, Rooms* actualro
 		printf("-To look the room where you are use look and the direction.\n It will says how it is the room where you are and the\n exits that it have.\n");
 		printf(" You can also look only an exit, looking the direction.\nexample : look room, look north, look east...\n\n-Somewhere there will be closed doors, use open to pass or\n");
 		printf(" close to close the door you actually open.\nexample : open north, open south, open up, close south...\n\n");
-		getchar();
+		
 	}
 
 

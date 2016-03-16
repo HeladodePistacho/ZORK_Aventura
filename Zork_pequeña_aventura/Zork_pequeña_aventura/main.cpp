@@ -12,7 +12,7 @@ int main()
 	char break_action[] = { ' ', 0 };
 	char* first_word;
 	char* second_word;
-	int finish;
+	bool finish;
 	
 	World map;
 	map.CreateWorld(*map.player, map.rooms, map.exits);
@@ -33,7 +33,9 @@ int main()
 			ToDo(first_word, second_word, map.player, map.rooms, map.exits);
 			finish = finish_game(first_word);
 
-	} while (finish == 0);
+			printf("\n\n");
+
+	} while (finish == false);
 
 	system("pause");
 	return 0;
