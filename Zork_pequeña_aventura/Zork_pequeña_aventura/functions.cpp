@@ -1,5 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include "Header.h"
+#include "World.h"
+#include "Exits.h"
+#include "Player.h"
+#include "Rooms.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -93,12 +96,12 @@ void ToDo(char first_word[], char second_word[], Player* player, Rooms* actualro
 
 
 	if (equal_go[0] == 0 || equal_go[1] == 0){
-		movement(second_word, player, exits);
+		player->movement(second_word, exits);
 	}
 	else{
 		for (int i = 0; i < 12; i++){
 			if (equal_directions[i] == 0){
-				movement(first_word, player, exits);
+				player->movement(first_word, exits);
 			}
 		}
 	}
@@ -147,42 +150,46 @@ void looking_exits(char second_word[], Player* player, Exit* exits){
 
 //This looks if the path is open or closed. If it is open, then search for the exit with the direction you asked for 
 //and changes the player_room for the destiny room of the exit and prints it name. If it is close don't let you pass
-void movement(char first_word[], Player* player, Exit* exits){
+void Player::movement(const char first_word[],const Exit exits[]){
 
-	int door_closed = 0;
+	bool door_closed = true;
+	bool recheable_room = false;
 	int equal_direction;
-	int counter = 0;
+	
 
 	change_directions(&first_word);
 	
-
-
 	for (int j = 0; j < 26; j++){
-		equal_direction = strcmp(first_word, (exits + j)->direction);
 
-		if ((exits + j)->open == true && (exits + j)->origen == player->player_room)
+		equal_direction = strcmp(first_word, exits[j].direction);
+
+		if (exits[j].open == true && exits[j].origen == player_room)
 		{
 
-			if ((exits + j)->origen == player->player_room && equal_direction == 0){
-				player->player_room = (exits + j)->destiny;
-				printf("%s\n", player->player_room->room_name);
-				counter++;
+			if (equal_direction == 0)
+			{
+				player_room = exits[j].destiny;
+				printf("%s\n", player_room->room_name);
+				recheable_room = true;
 				break;
 			}
-
+			
 		}
-		else if ((exits + j)->open == false && (exits + j)->origen == player->player_room){
-			(exits + j)->open = false;
-			door_closed++;
+		else {
+			if (exits[j].open == false && exits[j].origen == player_room)
+			{
+				if (equal_direction == 0) door_closed = false;
+			}
 		}
-		
 	}
-	if (door_closed != 0){
+	if (door_closed == false){
 		printf("You can't go this way, the path is closed\n");
 	}
-	else if (counter == 0){
+	else if (recheable_room == false)
+	{
 		printf("You can't go this way\n");
 	}
+	
 }
 
 //This function lets the player open and close paths changing the boolen open from the exits
@@ -247,7 +254,7 @@ void open_close_door(char first_word[], char second_word[], Player* player, Exit
 }
 
 //This allows the player to type only n/s/w/e/u/d to move
-void change_directions(char* first_word[]){
+void change_directions(const char* first_word[]){
 	int short_directions[6] = { strcmp(*first_word, "n"), strcmp(*first_word, "s"), strcmp(*first_word, "w"), strcmp(*first_word, "e"), strcmp(*first_word, "u"), strcmp(*first_word, "d") };
 
 	if (short_directions[0] == 0){

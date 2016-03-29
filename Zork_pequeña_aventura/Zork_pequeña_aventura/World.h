@@ -1,28 +1,11 @@
 #ifndef CLASSANDFUNCTIONS
 #define CLASSANDUNCTIONS
 
-class Rooms
-{
-public:
-	char room_name[25];
-	char room_description[150];
-};
+#include "Exits.h"
+#include "Rooms.h"
+#include "Player.h"
 
-class Player
-{
-public:
-	Rooms *player_room;
-};
 
-class Exit
-{
-public:
-	char exit_name[100];
-	Rooms* origen;
-	Rooms* destiny;
-	char direction[6];
-	bool open;
-};
 
 class World
 {
@@ -52,11 +35,11 @@ void looking(Player&, Exit*);
 
 void looking_exits(char[], Player*, Exit*);
 
-void movement(char[], Player*, Exit*);
+
 
 void open_close_door(char[], char[], Player*, Exit*);
 
-void change_directions(char*[]);
+void change_directions(const char*[]);
 
 void ToDo(char[], char[], Player*, Rooms*, Exit*);
 
