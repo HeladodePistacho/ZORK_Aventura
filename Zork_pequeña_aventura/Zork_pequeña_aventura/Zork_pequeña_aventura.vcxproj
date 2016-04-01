@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exits.h" />
+    <ClInclude Include="MotherClass.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rooms.h" />
     <ClInclude Include="World.h" />

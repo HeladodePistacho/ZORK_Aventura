@@ -1,9 +1,9 @@
 #ifndef ROOMS
 #define ROOMS
 
+#include "MotherClass.h"
 
-
-class Rooms
+class Rooms 
 {
 public:
 	char room_name[25];
