@@ -56,7 +56,7 @@ void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[26])
 }
 
 //This function looks if first_word == quit, if it is returns 1, and that finish the game.
-bool finish_game(char first_word[]) 
+bool World::finish_game(const char first_word[]) 
 {
 	int equal_quit[2] = { strcmp(first_word, "quit"), strcmp(first_word, "Quit") };
 

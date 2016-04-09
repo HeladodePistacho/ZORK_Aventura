@@ -34,7 +34,7 @@ int main()
 		} while (first_word == NULL);
 
 			ToDo(first_word, second_word, map.player, map.rooms, map.exits);
-			finish = finish_game(first_word);
+			finish = map.finish_game(first_word);
 
 			printf("\n\n");
 

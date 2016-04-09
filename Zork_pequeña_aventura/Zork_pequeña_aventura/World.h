@@ -27,6 +27,7 @@ public:
 		delete[]exits;
 	}
 	void CreateWorld(Player&, Rooms[], Exit[]);
+	bool finish_game(const char first_word[]);
 };
 
 bool finish_game(char[]);
