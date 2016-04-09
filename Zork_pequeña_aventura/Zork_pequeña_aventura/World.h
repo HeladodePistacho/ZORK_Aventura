@@ -28,20 +28,12 @@ public:
 	}
 	void CreateWorld(Player&, Rooms[], Exit[]);
 	bool finish_game(const char first_word[]);
+	void action(const char first_word[], const char second_word[], Player* player, Rooms* actualroom, Exit* exits);
 };
 
-bool finish_game(char[]);
-
-void looking(Player&, Exit*);
-
-void looking_exits(char[], Player*, Exit*);
 
 
 
-void open_close_door(char[], char[], Player*, Exit*);
 
-void change_directions(const char*[]);
-
-void ToDo(char[], char[], Player*, Rooms*, Exit*);
 
 #endif
