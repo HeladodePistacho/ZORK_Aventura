@@ -3,11 +3,12 @@
 
 #include "MotherClass.h"
 
-class Rooms 
+class Rooms : public entity
 {
 public:
-	char room_name[25];
-	char room_description[150];
+
+	char* name;
+	char* description;
 
 };
 

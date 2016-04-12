@@ -24,6 +24,7 @@ void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[26])
 	rooms[11] = { "Bedside Table", "Near the bed, there is a plate with some snacks and another with the rests of those snacks" };
 	rooms[12] = { "Above the Wardrobe", "A dusty and dark place, your brother is here waiting for you to fight the spider ans save him" };
 
+
 	player.player_room = (rooms + 2);
 
 	exits[0] = { "You will go in front of the heater", (rooms + 0), (rooms + 1), "north", true };
