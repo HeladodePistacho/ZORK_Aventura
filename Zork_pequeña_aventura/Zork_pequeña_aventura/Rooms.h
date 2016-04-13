@@ -1,14 +1,17 @@
 #ifndef ROOMS
 #define ROOMS
 
-#include "MotherClass.h"
+#include "entity.h"
+#include "my_string.h"
 
-class Rooms : public entity
+class my_string;
+
+class Rooms : protected entity
 {
 public:
 
-	char* name;
-	char* description;
+	Rooms(const char* nam, const char* des) : entity(name.c_str, description.c_str) {}
+	
 
 };
 

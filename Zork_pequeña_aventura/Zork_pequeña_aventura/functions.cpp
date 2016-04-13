@@ -4,12 +4,18 @@
 #include "Player.h"
 #include "Rooms.h"
 #include <stdio.h>
-#include <string.h>
+
 
 
 //This method creates the player, the rooms array and the exits array.
-void World::CreateWorld(Player& player, Rooms rooms[13], Exit exits[26])
+void World::CreateWorld(dynamic_array<entity>& entities)
 {
+
+	entities.push_back(new Rooms("Center of the room", "A lightly place in the middle of the room, there's nothing interesting to do, but you can go everywhere from here"));
+	
+	
+
+
 	rooms[0] = { "Center of the room", "A lightly place in the middle of the room, there's nothing interesting to do, but you can go everywhere from here" };
 	rooms[1] = { "In Front of the Heater", "A warm place under some book shelves, between the wardrobe and the desk" };
 	rooms[2] = { "Under the wardrobe", "Your house, it is a wet but homely place" };

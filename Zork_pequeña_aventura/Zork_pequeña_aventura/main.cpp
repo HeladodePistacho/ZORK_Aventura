@@ -4,13 +4,16 @@
 #include "Player.h"
 #include "Rooms.h"
 #include <stdio.h>
-#include <string.h>
+#include "my_string.h"
 #include <stdlib.h>
 
 
 
 int main()
 {
+
+	my_string a(30);
+
 	char action[20];
 	char break_action[] = { ' ', 0 };
 	char* first_word;

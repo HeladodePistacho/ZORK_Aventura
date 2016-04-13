@@ -2,7 +2,7 @@
 #ifndef _ITEMS_
 #define _ITEMS_
 
-#include "MotherClass.h"
+#include "entity.h"
 
 class item : public entity
 {

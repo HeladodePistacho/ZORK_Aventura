@@ -66,11 +66,14 @@
   <ItemGroup>
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="my_string.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dinamic_array.h" />
     <ClInclude Include="Exits.h" />
     <ClInclude Include="Items.h" />
-    <ClInclude Include="MotherClass.h" />
+    <ClInclude Include="entity.h" />
+    <ClInclude Include="my_string.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rooms.h" />
     <ClInclude Include="World.h" />
