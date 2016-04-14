@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "dinamic_array.h"
 
+class entity;
 
 class World
 {
@@ -13,12 +14,11 @@ public:
 	Player* player;
 	dynamic_array <Rooms*> rooms;
 	dynamic_array <Exit*> exits;
-	dynamic_array <entity*> entities;
+	dynamic_array <item*> items;
 
 public:
 
 	World(){
-		player = new Player;
 		
 		
 	}
@@ -26,8 +26,9 @@ public:
 		delete player;
 		
 		
+		
 	}
-	void CreateWorld(dynamic_array<entity>& entities);
+	void CreateWorld();
 	bool finish_game(const char first_word[]);
 	void action(const char first_word[], const char second_word[], Player* player, Rooms* actualroom, Exit* exits);
 };

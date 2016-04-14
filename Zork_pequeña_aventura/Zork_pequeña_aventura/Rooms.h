@@ -6,11 +6,14 @@
 
 class my_string;
 
-class Rooms : protected entity
+class Rooms : public entity
 {
 public:
 
-	Rooms(const char* nam, const char* des) : entity(name.c_str, description.c_str) {}
+	Rooms(const char* nam, const char* des) : entity(nam, des) 
+	{
+		type = ROOM;
+	}
 	
 
 };

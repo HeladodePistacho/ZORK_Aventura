@@ -3,64 +3,111 @@
 #include "Exits.h"
 #include "Player.h"
 #include "Rooms.h"
+#include "Items.h"
+#include "Composed_items.h"
 #include <stdio.h>
 
 
 
 //This method creates the player, the rooms array and the exits array.
-void World::CreateWorld(dynamic_array<entity>& entities)
+void World::CreateWorld()
 {
+	//ROOMS
+	Rooms* CenterRoom = new Rooms("Center of the room", "A lightly place in the middle of the room, there's nothing interesting to do, but you can go everywhere from here");
+	Rooms* Heater = new Rooms("In Front of the Heater", "A warm place under some book shelves, between the wardrobe and the desk");
+	Rooms* UnderWardrobe = new Rooms("Under the wardrobe", "Your house, it is a wet but homely place");
+	Rooms* FrontWardrobe = new Rooms("Front of the wardrobe", "A large and empty place in front of your home");
+	Rooms* BehindDoor = new Rooms("Behind the Door", "A really dark place, you will need something to watch if there's something in front of you");
+	Rooms* BookShelves = new Rooms("Book Shelves", "A high place with some adventure books and comics, high enough to reach the wardrobe top");
+	Rooms* Desk = new Rooms("Desk", "A lightly place next to the window with a half-eated sandwich, a laptop and some jambled stuff");
+	Rooms* UnderBed = new Rooms("Under the Bed", "This place is a mess, really dirty and full of dust, you can also see a tiny door");
+	Rooms* Bed = new Rooms("Bed", "Really soft and comfortable place, the bedside table seems reacheable from here");
+	Rooms* MouseCave = new Rooms("Mouse cave", "A place which stinks of cheese, there is a mouse trap here but seems that the animal is smarter than the humans");
+	Rooms* BedsideTable = new Rooms("Bedside Table", "Near the bed, there is a plate with some snacks and another with the rests of those snacks");
+	Rooms* AboveWardrobe = new Rooms("Above the Wardrobe", "A dusty and dark place, your brother is here waiting for you to fight the spider ans save him");
+	Rooms* UnderDesk = new Rooms("Under the Desk", "A shadowy place, home of Rusty the old man, you can also reach some drawers from here");
 
-	entities.push_back(new Rooms("Center of the room", "A lightly place in the middle of the room, there's nothing interesting to do, but you can go everywhere from here"));
+	rooms.push_back(CenterRoom);
+	rooms.push_back(Heater);
+	rooms.push_back(UnderWardrobe);
+	rooms.push_back(FrontWardrobe);
+	rooms.push_back(BehindDoor);
+	rooms.push_back(BookShelves);
+	rooms.push_back(Desk);
+	rooms.push_back(UnderBed);
+	rooms.push_back(Bed);
+	rooms.push_back(MouseCave);
+	rooms.push_back(BedsideTable);
+	rooms.push_back(AboveWardrobe);
+	rooms.push_back(UnderDesk);
+
+	//EXITS
+	exits.push_back(new Exit("north", "You will go in front of the heater", CenterRoom, Heater, true));
+	exits.push_back(new Exit("east", "You will go in front of the wardrobe", CenterRoom, FrontWardrobe, true));
+	exits.push_back(new Exit("south", "You will go inside the darkness of under the bed", CenterRoom, UnderBed, true));
+	exits.push_back(new Exit("west", "You will go the centre of the room", FrontWardrobe, CenterRoom, true));
+	exits.push_back(new Exit("north", "That's the way to your home", FrontWardrobe, UnderWardrobe, true));
+	exits.push_back(new Exit("south", "The path will get darker as you get closer the door", FrontWardrobe, BehindDoor, true));
+	exits.push_back(new Exit("south", "This is the south exit of your home", UnderWardrobe, FrontWardrobe, true));
+	exits.push_back(new Exit("west", "This is the west exit of your home, to the warm heater", UnderWardrobe, Heater, true));
+	exits.push_back(new Exit("east", "This is the east way to your home", Heater, UnderWardrobe, true));
+	exits.push_back(new Exit("south", "This path will get you into the centre of the room", Heater, CenterRoom, true));
+	exits.push_back(new Exit("west", "A dark and wet path to under the desk", Heater, UnderDesk, true));
+	exits.push_back(new Exit("east", "A dark and warm path to the heater", UnderDesk, Heater, true));
+	exits.push_back(new Exit("up", "You could go this way if the drawers were open", UnderDesk, Desk, false));
+	exits.push_back(new Exit("east", "A scary jump to reach the book shelves", Desk, BookShelves, true));
+	exits.push_back(new Exit("down", "You can descend using the drawers as a stairs", Desk, UnderDesk, true));
+	exits.push_back(new Exit("north", "This path is getting you to the centre of the room", UnderBed, CenterRoom, true));
+	exits.push_back(new Exit("south", "This path is full of animal hair", UnderBed, MouseCave, false));
+	exits.push_back(new Exit("up", "You can climb to the bed using the bed sheet", UnderBed, Bed, true));
+	exits.push_back(new Exit("west", "it seems that you can reach the bedside table", Bed, BedsideTable, true));
+	exits.push_back(new Exit("east", "This will return you to the bed", BedsideTable, Bed, true));
+	exits.push_back(new Exit("north", "The path conects the stinky mouse cave with the under bed", MouseCave, UnderBed, true));
+	exits.push_back(new Exit("north", "A path that is getting shinnier as you approach the wardrobe", BehindDoor, FrontWardrobe, true));
+	exits.push_back(new Exit("east", "A scarier jump to the above wardrobe", BookShelves, AboveWardrobe, true));
+	exits.push_back(new Exit("west", "A jump to the desk", BookShelves, Desk, true));
+	exits.push_back(new Exit("west", "A jump from the dusty wardrobe to the bookshelves", AboveWardrobe, BookShelves, true));
+	exits.push_back(new Exit("down", "You can descend using the same bed sheet that you used to get here", Bed, UnderBed, true));
+	
+	//PLAYER
+	player = new Player(UnderWardrobe);
+
+	//COMPOSED ITEMS
+
+	item* BluePen = new composed_item("Blue Pen", "A standar pen, maybe you can do something with it", true, Desk, false);
+	item* Hook = new composed_item("Hook", "This hook will help you to reach higher positions", false, nullptr, false);
+	item* SunflowerGun = new composed_item("Sunflower seed gun", "This powerfull weapon is perfect to fight from distance", false, nullptr, false);
+	item* SunflowerGunPaper = new composed_item("Sunflower seed gun loaded with paper", "You are watching that this could not work fine", false, nullptr, false);
+	item* SunflowerGunLoaded = new composed_item("Sunflower seed gun loaded", "Fully reloaded and ready to shoot", false, nullptr, false);
+	item* Catapult = new composed_item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, nullptr, false);
+	item* Backpack = new composed_item("Backpack", "Perfect to carry more stuff", true, UnderWardrobe, true);
+	item* Shoe = new composed_item("The Right shoe of the human", "A red shoe", true, UnderWardrobe, true);
+
+	//SIMPLE ITEMS
+	item* BlueWire = new simple_item("Blue pen wire", "A elastic wire that can be used to create new items", true, BluePen->item_room, BluePen, SunflowerGun);
+	item* BluePlastic = new simple_item("Blue pen plastic", "The plastic housing of the blue pen", true, BluePen->item_room, BluePen, SunflowerGun);
+	item* Shoelace = new simple_item("Shoelace", "This item is usefull to craft recheable items", true, UnderBed, nullptr, Hook);
+
 	
 	
-
-
-	rooms[0] = { "Center of the room", "A lightly place in the middle of the room, there's nothing interesting to do, but you can go everywhere from here" };
-	rooms[1] = { "In Front of the Heater", "A warm place under some book shelves, between the wardrobe and the desk" };
-	rooms[2] = { "Under the wardrobe", "Your house, it is a wet but homely place" };
-	rooms[3] = { "Front of the wardrobe", "A large and empty place in front of your home" };
-	rooms[4] = { "Behind the Door", "A really dark place, you will need something to watch if there's something in front of you" };
-	rooms[5] = { "Book Shelves", "A high place with some adventure books and comics, high enough to reach the wardrobe top" };
-	rooms[6] = { "Under the Desk", "A shadowy place, home of Rusty the old man, you can also reach some drawers from here" };
-	rooms[7] = { "Desk", "A lightly place next to the window with a half-eated sandwich, a laptop and some jambled stuff" };
-	rooms[8] = { "Under the Bed", "This place is a mess, really dirty and full of dust, you can also see a tiny door" };
-	rooms[9] = { "Bed", "Really soft and comfortable place, the bedside table seems reacheable from here" };
-	rooms[10] = { "Mouse cave", "A place which stinks of cheese, there is a mouse trap here but seems that the animal is smarter than the humans" };
-	rooms[11] = { "Bedside Table", "Near the bed, there is a plate with some snacks and another with the rests of those snacks" };
-	rooms[12] = { "Above the Wardrobe", "A dusty and dark place, your brother is here waiting for you to fight the spider ans save him" };
-
-
-	player.player_room = (rooms + 2);
-
-	exits[0] = { "You will go in front of the heater", (rooms + 0), (rooms + 1), "north", true };
-	exits[1] = { "You will go in front of the wardrobe", (rooms + 0), (rooms + 3), "east", true };
-	exits[2] = { "You will go inside the darkness of under the bed", (rooms + 0), (rooms + 8), "south", true };
-	exits[3] = { "You will go the centre of the room", (rooms + 3), (rooms + 0), "west", true };
-	exits[4] = { "That's the way to your home", (rooms + 3), (rooms + 2), "north", true };
-	exits[5] = { "The path will get darker as you get closer the door", (rooms + 3), (rooms + 4), "south", true };
-	exits[6] = { "This is the south exit of your home", (rooms + 2), (rooms + 3), "south", true };
-	exits[7] = { "This is the west exit of your home, to the warm heater", (rooms + 2), (rooms + 1), "west", true };
-	exits[8] = { "This is the east way to your home", (rooms + 1), (rooms + 2), "east", true };
-	exits[9] = { "This path will get you into the centre of the room", (rooms + 1), (rooms + 0), "south", true };
-	exits[10] = { "A dark and wet path to under the desk", (rooms + 1), (rooms + 6), "west", true };
-	exits[11] = { "A dark and warm path to the heater", (rooms + 6), (rooms + 1), "east", true };
-	exits[12] = { "You could go this way if the drawers were open", (rooms + 6), (rooms + 7), "up", false };
-	exits[13] = { "A scary jump to reach the book shelves", (rooms + 7), (rooms + 5), "east", true };
-	exits[14] = { "You can descend using the drawers as a stairs", (rooms + 7), (rooms + 6), "down", true };
-	exits[15] = { "This path is getting you to the centre of the room", (rooms + 8), (rooms + 0), "north", true };
-	exits[16] = { "This path is full of animal hair", (rooms + 8), (rooms + 10), "south", false };
-	exits[17] = { "You can climb to the bed using the bed sheet", (rooms + 8), (rooms + 9), "up", true };
-	exits[18] = { "it seems that you can reach the bedside table", (rooms + 9), (rooms + 11), "west", true };
-	exits[19] = { "This will return you to the bed", (rooms + 11), (rooms + 9), "east", true };
-	exits[20] = { "The path conects the stinky mouse cave with the under the bed", (rooms + 10), (rooms + 8), "north", true };
-	exits[21] = { "A path that is getting shinnier as you approach the wardrobe", (rooms + 4), (rooms + 3), "north", true };
-	exits[22] = { "A scarier jump to the above wardrobe", (rooms + 5), (rooms + 12), "east", true };
-	exits[23] = { "A jump to the desk", (rooms + 5), (rooms + 7), "west", true };
-	exits[24] = { "A jump from the dusty wardrobe to the bookshelves", (rooms + 12), (rooms + 5), "west", true };
-	exits[25] = { "You can descend using the same bed sheet that you used to get here", (rooms + 9), (rooms + 8), "down", true };
-
+	
+	
 }
+/*
+					8s , 8c
+* Needle-s
+* Mouse trap-s			
+* Cheese-s			
+* Sunflower seed-s			
+* Matchstick-s
+
+*/
+
+
+	
+}
+
+
 
 //This function looks if first_word == quit, if it is returns 1, and that finish the game.
 bool World::finish_game(const char first_word[]) 
@@ -126,8 +173,8 @@ void World::action(const char first_word[], const char second_word[], Player* pl
 //This prints the room name and the description of where you are, and it's exits directions
 void Player::looking(Exit* exits)
 {
-	printf("%s\n", player_room->room_name);
-	printf("%s\n", player_room->room_description);
+	printf("%s\n", player_room->name);
+	printf("%s\n", player_room->description);
 	printf("There is an exit going:");
 	for (int j = 0; j < 26; j++){
 		if ((exits + j)->origen == player_room){
@@ -143,10 +190,10 @@ void Player::looking(Exit* exits)
 void Player::looking_exits(const char second_word[], const Exit* exits){
 	int counter = 0;	//if counter == 0 at the end of the loop there isn't a room in the direction said								
 	for (int j = 0; j < 26; j++){
-		int equal = strcmp(second_word, (exits + j)->direction);
+		int equal = strcmp(second_word, (exits + j)->name);
 
 		if ((exits + j)->origen == player_room && equal == 0){
-			printf("%s\n", (exits + j)->exit_name);
+			printf("%s\n", (exits + j)->description);
 			counter++;
 		}
 	}
@@ -174,7 +221,7 @@ void Player::movement(const char first_word[],const Exit exits[]){
 			if (equal_direction == 0)
 			{
 				player_room = exits[j].destiny;
-				printf("%s\n", player_room->room_name);
+				printf("%s\n", player_room->name);
 				recheable_room = true;
 				break;
 			}
@@ -257,3 +304,5 @@ void Player::open_close_door(const char first_word[], const char second_word[], 
 	}
 
 }
+
+*/

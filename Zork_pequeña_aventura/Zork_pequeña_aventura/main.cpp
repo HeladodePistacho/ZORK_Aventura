@@ -12,7 +12,7 @@
 int main()
 {
 
-	my_string a(30);
+	
 
 	char action[20];
 	char break_action[] = { ' ', 0 };
@@ -21,10 +21,14 @@ int main()
 	bool finish;
 	
 	World map;
-	map.CreateWorld(*map.player, map.rooms, map.exits);
-	printf("You are %s\n Good luck\n", (map.rooms[2].room_name));
+	map.CreateWorld();
+	
 
-	do
+	
+	
+
+	
+	/*do
 	{
 		do{
 			printf("What's your next action?\n");
@@ -43,6 +47,7 @@ int main()
 
 	} while (finish == false);
 
+	*/
 	system("pause");
 	return 0;
 

@@ -69,6 +69,7 @@
     <ClCompile Include="my_string.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Composed_items.h" />
     <ClInclude Include="dinamic_array.h" />
     <ClInclude Include="Exits.h" />
     <ClInclude Include="Items.h" />
@@ -76,6 +77,7 @@
     <ClInclude Include="my_string.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rooms.h" />
+    <ClInclude Include="Simple_items.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

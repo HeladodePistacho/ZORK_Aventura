@@ -144,9 +144,7 @@ void my_string::clean()
 
 }
 
-
-
-{
+void my_string::shrink_to_fit(){
 	int len = lenght() + 1;
 
 	if (len < reserved_memory)

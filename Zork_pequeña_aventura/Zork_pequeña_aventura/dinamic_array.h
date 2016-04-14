@@ -19,12 +19,12 @@ public:
 
 public:
 
-	array_dynamic()
+	dynamic_array()
 	{
 		vector = new TYPE[capacity];	
 	}
 
-	array_dynamic(const array_dynamic& other_array)
+	dynamic_array(const dynamic_array& other_array)
 	{
 		capacity = other_array.capacity;
 		num_elements = other_array.num_elements;
