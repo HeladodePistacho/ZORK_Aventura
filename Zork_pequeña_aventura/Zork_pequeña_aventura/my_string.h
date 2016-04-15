@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include "dinamic_array.h"
 
 
 //Array de cadenas para el strtok.
@@ -13,6 +14,7 @@ private:
 
 	 char* buffer = nullptr;
 	 unsigned int reserved_memory;
+	 dynamic_array <char*> phrase;
 	
 public:
 
@@ -38,7 +40,10 @@ public:
 
 	unsigned int capacity() const;
 
+	void tokenize(const char* break_buffer);
+	
 
+	dynamic_array <char*> GetVector()const;
 
 };
 

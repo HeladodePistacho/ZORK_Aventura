@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "my_string.h"
+#include "dinamic_array.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -145,7 +146,7 @@ void my_string::clean()
 }
 
 void my_string::shrink_to_fit(){
-	int len = lenght() + 1;
+	unsigned int len = lenght() + 1;
 
 	if (len < reserved_memory)
 	{
@@ -157,4 +158,20 @@ void my_string::shrink_to_fit(){
 		buffer = new char[len];
 		strcpy_s(buffer, len, temp_buf);
 	}
+}
+
+void my_string::tokenize(const char* break_buffer)
+{
+	char* phrase_member = strtok(buffer, break_buffer);
+	phrase.push_back(phrase_member);
+	while ((phrase_member = strtok(NULL, break_buffer)) != NULL)
+	{
+		phrase.push_back(phrase_member);
+	}
+
+}
+
+dynamic_array <char*> my_string::GetVector() const
+{
+	return phrase;
 }

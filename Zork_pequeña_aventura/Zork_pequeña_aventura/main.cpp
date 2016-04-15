@@ -12,19 +12,17 @@
 
 int main()
 {
-	my_string main_action();
-	
+	char action[50];
 	World map;
-	
-	
-	
+	gets(action);
 
-	
-	
-	
-	
+	my_string main_action(action);
+	main_action.tokenize(" ");
+	main_action.GetVector()[0];
+	main_action.GetVector()[1];
+	main_action.GetVector()[2];
+	main_action.GetVector()[3];
 
-	
 	/*do
 	{
 		do{
