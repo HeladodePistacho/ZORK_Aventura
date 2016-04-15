@@ -12,21 +12,19 @@ class World
 {
 public:
 	Player* player;
-	dynamic_array <Rooms*> rooms;
-	dynamic_array <Exit*> exits;
-	dynamic_array <item*> items;
+	dynamic_array <Rooms*> world_rooms;
+	dynamic_array <Exit*> world_exits;
+	dynamic_array <item*> world_items;
 
 public:
 
-	World(){
-		
+	World()
+	{
 		
 	}
-	~World(){
-		delete player;
-		
-		
-		
+	~World()
+	{
+		delete player;	
 	}
 	void CreateWorld();
 	bool finish_game(const char first_word[]);

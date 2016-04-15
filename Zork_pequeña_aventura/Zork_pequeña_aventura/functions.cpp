@@ -4,7 +4,6 @@
 #include "Player.h"
 #include "Rooms.h"
 #include "Items.h"
-#include "Composed_items.h"
 #include <stdio.h>
 
 
@@ -27,87 +26,87 @@ void World::CreateWorld()
 	Rooms* AboveWardrobe = new Rooms("Above the Wardrobe", "A dusty and dark place, your brother is here waiting for you to fight the spider ans save him");
 	Rooms* UnderDesk = new Rooms("Under the Desk", "A shadowy place, home of Rusty the old man, you can also reach some drawers from here");
 
-	rooms.push_back(CenterRoom);
-	rooms.push_back(Heater);
-	rooms.push_back(UnderWardrobe);
-	rooms.push_back(FrontWardrobe);
-	rooms.push_back(BehindDoor);
-	rooms.push_back(BookShelves);
-	rooms.push_back(Desk);
-	rooms.push_back(UnderBed);
-	rooms.push_back(Bed);
-	rooms.push_back(MouseCave);
-	rooms.push_back(BedsideTable);
-	rooms.push_back(AboveWardrobe);
-	rooms.push_back(UnderDesk);
+	world_rooms.push_back(CenterRoom);
+	world_rooms.push_back(Heater);
+	world_rooms.push_back(UnderWardrobe);
+	world_rooms.push_back(FrontWardrobe);
+	world_rooms.push_back(BehindDoor);
+	world_rooms.push_back(BookShelves);
+	world_rooms.push_back(Desk);
+	world_rooms.push_back(UnderBed);
+	world_rooms.push_back(Bed);
+	world_rooms.push_back(MouseCave);
+	world_rooms.push_back(BedsideTable);
+	world_rooms.push_back(AboveWardrobe);
+	world_rooms.push_back(UnderDesk);
 
 	//EXITS
-	exits.push_back(new Exit("north", "You will go in front of the heater", CenterRoom, Heater, true));
-	exits.push_back(new Exit("east", "You will go in front of the wardrobe", CenterRoom, FrontWardrobe, true));
-	exits.push_back(new Exit("south", "You will go inside the darkness of under the bed", CenterRoom, UnderBed, true));
-	exits.push_back(new Exit("west", "You will go the centre of the room", FrontWardrobe, CenterRoom, true));
-	exits.push_back(new Exit("north", "That's the way to your home", FrontWardrobe, UnderWardrobe, true));
-	exits.push_back(new Exit("south", "The path will get darker as you get closer the door", FrontWardrobe, BehindDoor, true));
-	exits.push_back(new Exit("south", "This is the south exit of your home", UnderWardrobe, FrontWardrobe, true));
-	exits.push_back(new Exit("west", "This is the west exit of your home, to the warm heater", UnderWardrobe, Heater, true));
-	exits.push_back(new Exit("east", "This is the east way to your home", Heater, UnderWardrobe, true));
-	exits.push_back(new Exit("south", "This path will get you into the centre of the room", Heater, CenterRoom, true));
-	exits.push_back(new Exit("west", "A dark and wet path to under the desk", Heater, UnderDesk, true));
-	exits.push_back(new Exit("east", "A dark and warm path to the heater", UnderDesk, Heater, true));
-	exits.push_back(new Exit("up", "You could go this way if the drawers were open", UnderDesk, Desk, false));
-	exits.push_back(new Exit("east", "A scary jump to reach the book shelves", Desk, BookShelves, true));
-	exits.push_back(new Exit("down", "You can descend using the drawers as a stairs", Desk, UnderDesk, true));
-	exits.push_back(new Exit("north", "This path is getting you to the centre of the room", UnderBed, CenterRoom, true));
-	exits.push_back(new Exit("south", "This path is full of animal hair", UnderBed, MouseCave, false));
-	exits.push_back(new Exit("up", "You can climb to the bed using the bed sheet", UnderBed, Bed, true));
-	exits.push_back(new Exit("west", "it seems that you can reach the bedside table", Bed, BedsideTable, true));
-	exits.push_back(new Exit("east", "This will return you to the bed", BedsideTable, Bed, true));
-	exits.push_back(new Exit("north", "The path conects the stinky mouse cave with the under bed", MouseCave, UnderBed, true));
-	exits.push_back(new Exit("north", "A path that is getting shinnier as you approach the wardrobe", BehindDoor, FrontWardrobe, true));
-	exits.push_back(new Exit("east", "A scarier jump to the above wardrobe", BookShelves, AboveWardrobe, true));
-	exits.push_back(new Exit("west", "A jump to the desk", BookShelves, Desk, true));
-	exits.push_back(new Exit("west", "A jump from the dusty wardrobe to the bookshelves", AboveWardrobe, BookShelves, true));
-	exits.push_back(new Exit("down", "You can descend using the same bed sheet that you used to get here", Bed, UnderBed, true));
+	world_exits.push_back(new Exit("north", "You will go in front of the heater", CenterRoom, Heater, true));
+	world_exits.push_back(new Exit("east", "You will go in front of the wardrobe", CenterRoom, FrontWardrobe, true));
+	world_exits.push_back(new Exit("south", "You will go inside the darkness of under the bed", CenterRoom, UnderBed, true));
+	world_exits.push_back(new Exit("west", "You will go the centre of the room", FrontWardrobe, CenterRoom, true));
+	world_exits.push_back(new Exit("north", "That's the way to your home", FrontWardrobe, UnderWardrobe, true));
+	world_exits.push_back(new Exit("south", "The path will get darker as you get closer the door", FrontWardrobe, BehindDoor, true));
+	world_exits.push_back(new Exit("south", "This is the south exit of your home", UnderWardrobe, FrontWardrobe, true));
+	world_exits.push_back(new Exit("west", "This is the west exit of your home, to the warm heater", UnderWardrobe, Heater, true));
+	world_exits.push_back(new Exit("east", "This is the east way to your home", Heater, UnderWardrobe, true));
+	world_exits.push_back(new Exit("south", "This path will get you into the centre of the room", Heater, CenterRoom, true));
+	world_exits.push_back(new Exit("west", "A dark and wet path to under the desk", Heater, UnderDesk, true));
+	world_exits.push_back(new Exit("east", "A dark and warm path to the heater", UnderDesk, Heater, true));
+	world_exits.push_back(new Exit("up", "You could go this way if the drawers were open", UnderDesk, Desk, false));
+	world_exits.push_back(new Exit("east", "A scary jump to reach the book shelves", Desk, BookShelves, true));
+	world_exits.push_back(new Exit("down", "You can descend using the drawers as a stairs", Desk, UnderDesk, true));
+	world_exits.push_back(new Exit("north", "This path is getting you to the centre of the room", UnderBed, CenterRoom, true));
+	world_exits.push_back(new Exit("south", "This path is full of animal hair", UnderBed, MouseCave, false));
+	world_exits.push_back(new Exit("up", "You can climb to the bed using the bed sheet", UnderBed, Bed, true));
+	world_exits.push_back(new Exit("west", "it seems that you can reach the bedside table", Bed, BedsideTable, true));
+	world_exits.push_back(new Exit("east", "This will return you to the bed", BedsideTable, Bed, true));
+	world_exits.push_back(new Exit("north", "The path conects the stinky mouse cave with the under bed", MouseCave, UnderBed, true));
+	world_exits.push_back(new Exit("north", "A path that is getting shinnier as you approach the wardrobe", BehindDoor, FrontWardrobe, true));
+	world_exits.push_back(new Exit("east", "A scarier jump to the above wardrobe", BookShelves, AboveWardrobe, true));
+	world_exits.push_back(new Exit("west", "A jump to the desk", BookShelves, Desk, true));
+	world_exits.push_back(new Exit("west", "A jump from the dusty wardrobe to the bookshelves", AboveWardrobe, BookShelves, true));
+	world_exits.push_back(new Exit("down", "You can descend using the same bed sheet that you used to get here", Bed, UnderBed, true));
 	
 	//PLAYER
-	player = new Player(UnderWardrobe);
+	player = new Player(UnderWardrobe, 2, 3);
 
-	//COMPOSED ITEMS
+	//ITEMS
 
-	item* BluePen = new composed_item("Blue Pen", "A standar pen, maybe you can do something with it", true, Desk, false);
-	item* Hook = new composed_item("Hook", "This hook will help you to reach higher positions", false, nullptr, false);
-	item* SunflowerGun = new composed_item("Sunflower seed gun", "This powerfull weapon is perfect to fight from distance", false, nullptr, false);
-	item* SunflowerGunPaper = new composed_item("Sunflower seed gun loaded with paper", "You are watching that this could not work fine", false, nullptr, false);
-	item* SunflowerGunLoaded = new composed_item("Sunflower seed gun loaded", "Fully reloaded and ready to shoot", false, nullptr, false);
-	item* Catapult = new composed_item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, nullptr, false);
-	item* Backpack = new composed_item("Backpack", "Perfect to carry more stuff", true, UnderWardrobe, true);
-	item* Shoe = new composed_item("The Right shoe of the human", "A red shoe", true, UnderWardrobe, true);
-
-	//SIMPLE ITEMS
-	item* BlueWire = new simple_item("Blue pen wire", "A elastic wire that can be used to create new items", true, BluePen->item_room, BluePen, SunflowerGun);
-	item* BluePlastic = new simple_item("Blue pen plastic", "The plastic housing of the blue pen", true, BluePen->item_room, BluePen, SunflowerGun);
-	item* Shoelace = new simple_item("Shoelace", "This item is usefull to craft recheable items", true, UnderBed, nullptr, Hook);
-
+	item* BluePen = new item("Blue Pen", "A standar pen, maybe you can do something with it", true, Desk, nullptr, nullptr, false);
+	item* PoweredHook = new item("Powered Hook", "This awesome improved hook will help you to reach the wardrobe roof", false, nullptr, nullptr, nullptr, false);
+	item* NutsGunLoaded = new item("Sunflower seed gun loaded", "Fully reloaded and ready to shoot", false, nullptr, nullptr, nullptr, false);
+	item* Catapult = new item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, nullptr, nullptr, nullptr, false);
+	item* Backpack = new item("Backpack", "Perfect to carry more stuff", true, UnderWardrobe, nullptr, nullptr, true);
+	item* FireNeedle = new item("Fire Needle", "Improved needle with a incandescent needle tip, it is a super awesome weapon", false, nullptr, nullptr, nullptr, false);
+	item* NutsGun = new item("Sunflower seed gun", "This powerfull weapon is perfect to fight from distance, but you have no ammo", false, nullptr, NutsGunLoaded, nullptr, false);
+	item* Hook = new item("Hook", "This hook will help you to reach higher positions", false, nullptr, PoweredHook, nullptr, false);
+	item* BlueWire = new item("Blue pen wire", "A elastic wire that can be used to create new items", false, BluePen->item_room, NutsGun, PoweredHook, false);
+	item* BlackPlastic = new item("Black pen plastic", "This plastic have been used as a blowgun", true, Desk, NutsGun, nullptr, false);
+	item* Shoelace = new item("Shoelace", "This item is usefull to craft recheable items", true, UnderBed, Hook, Catapult, false);
+	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, BehindDoor, Hook, FireNeedle, false);
+	item* MouseTrap = new item("Mouse trap", "Seems that the cheese have been eaten, but the mouse is still alive", true, MouseCave, Catapult, nullptr, false);
+	item* Nuts = new item("Nuts", "A delicious snack for humans", true, BedsideTable, NutsGunLoaded, nullptr, false);
+	item* MatchStick = new item("MatchStic", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr, false);
 	
-	
-	
-	
+	world_items.push_back(BluePen);
+	world_items.push_back(PoweredHook);
+	world_items.push_back(NutsGunLoaded);
+	world_items.push_back(Catapult);
+	world_items.push_back(Backpack);
+	world_items.push_back(FireNeedle);
+	world_items.push_back(NutsGun);
+	world_items.push_back(Hook);
+	world_items.push_back(BlueWire);
+	world_items.push_back(BlackPlastic);
+	world_items.push_back(Shoelace);
+	world_items.push_back(Needle);
+	world_items.push_back(MouseTrap);
+	world_items.push_back(Nuts);
+	world_items.push_back(MatchStick);
 }
+
 /*
-					8s , 8c
-* Needle-s
-* Mouse trap-s			
-* Cheese-s			
-* Sunflower seed-s			
-* Matchstick-s
-
-*/
-
-
-	
-}
-
-
 
 //This function looks if first_word == quit, if it is returns 1, and that finish the game.
 bool World::finish_game(const char first_word[]) 

@@ -35,6 +35,12 @@ public:
 		}
 	}
 
+	dynamic_array(unsigned int size)
+	{
+		capacity = size;
+		vector = new TYPE[capacity];
+	}
+
 	void push_back(const TYPE& new_element)
 	{
 		if (num_elements == capacity)
@@ -82,7 +88,10 @@ public:
 
 	}
 
-
+	TYPE& operator[](const unsigned int position)
+	{
+		return vector[position];
+	}
 
 	TYPE operator[](const unsigned int position) const
 	{
@@ -115,9 +124,19 @@ public:
 
 	void pop_back()
 	{
-		vector[num_elements] = nullptr;
-		num_elements--;
+		bool pop_back(TYPE& value)
+		{
+
+			if (num_elements > 0)
+			{
+				num_elements--;
+				value = vector[num_elements];
+				return true;
+			}
+			return false;
+		}
 	}
+
 
 	
 

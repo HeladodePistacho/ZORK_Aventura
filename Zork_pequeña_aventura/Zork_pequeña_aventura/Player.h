@@ -2,10 +2,9 @@
 #define PLAYER
 
 #include "Rooms.h"
+#include "Items.h"
 #include "Exits.h"
-
-class item;
-class dinamic_array;
+#include "dinamic_array.h"
 
 class Player
 {
@@ -15,7 +14,7 @@ public:
 	dynamic_array<item*> equiped;
 public:
 
-	Player(Rooms* initial_room) : player_room(initial_room){}
+	Player(Rooms* initial_room, unsigned int equip, unsigned int inv) : player_room(initial_room), equiped(equip), inventory(inv){}
 	
 	void movement(const char[], const Exit[]);
 	void looking(Exit* exits);

@@ -8,12 +8,18 @@ class Rooms;
 class item : public entity
 {
 public:
+	item* craftable_item1;
+	item* craftable_item2;
 	Rooms* item_room;
 	bool dropped;
+	bool fillable;
 public:
 
-	item(const char* nam, const char* des, bool drop, Rooms* room) : entity(nam, des), dropped(drop), item_room(room)
+	item(const char* nam, const char* des, bool drop, Rooms* room, item* craft_item, item* craft_item2, bool fill) : entity(nam, des), dropped(drop), item_room(room)
 	{
+		fillable = fill;
+		craftable_item1 = craft_item;
+		craftable_item2 = craft_item2;
 		type = ITEM;
 	}
 
