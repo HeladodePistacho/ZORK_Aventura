@@ -69,23 +69,23 @@ void World::CreateWorld()
 	world_exits.push_back(new Exit("down", "You can descend using the same bed sheet that you used to get here", Bed, UnderBed, true));
 	
 	//PLAYER
-	player = new Player(UnderWardrobe, 2, 3);
+	player = new Player(Desk, 2, 3);
 
 	//ITEMS
 
-	item* BluePen = new item("Blue Pen", "A standar pen, maybe you can do something with it", true, Desk, nullptr, nullptr, false);
-	item* PoweredHook = new item("Powered Hook", "This awesome improved hook will help you to reach the wardrobe roof", false, nullptr, nullptr, nullptr, false);
-	item* NutsGunLoaded = new item("Sunflower seed gun loaded", "Fully reloaded and ready to shoot", false, nullptr, nullptr, nullptr, false);
+	item* BluePen = new item("BluePen", "A standar pen, maybe you can do something with it", true, Desk, nullptr, nullptr, false);
+	item* PoweredHook = new item("PoweredHook", "This awesome improved hook will help you to reach the wardrobe roof", false, nullptr, nullptr, nullptr, false);
+	item* NutsGunLoaded = new item("NutsGunLoaded", "Fully reloaded and ready to shoot", false, nullptr, nullptr, nullptr, false);
 	item* Catapult = new item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, nullptr, nullptr, nullptr, false);
 	item* Backpack = new item("Backpack", "Perfect to carry more stuff", true, UnderWardrobe, nullptr, nullptr, true);
-	item* FireNeedle = new item("Fire Needle", "Improved needle with a incandescent needle tip, it is a super awesome weapon", false, nullptr, nullptr, nullptr, false);
-	item* NutsGun = new item("Sunflower seed gun", "This powerfull weapon is perfect to fight from distance, but you have no ammo", false, nullptr, NutsGunLoaded, nullptr, false);
+	item* FireNeedle = new item("FireNeedle", "Improved needle with a incandescent needle tip, it is a super awesome weapon", false, nullptr, nullptr, nullptr, false);
+	item* NutsGun = new item("NutsGun", "This powerfull weapon is perfect to fight from distance, but you have no ammo", false, nullptr, NutsGunLoaded, nullptr, false);
 	item* Hook = new item("Hook", "This hook will help you to reach higher positions", false, nullptr, PoweredHook, nullptr, false);
-	item* BlueWire = new item("Blue pen wire", "A elastic wire that can be used to create new items", false, BluePen->item_room, NutsGun, PoweredHook, false);
-	item* BlackPlastic = new item("Black pen plastic", "This plastic have been used as a blowgun", true, Desk, NutsGun, nullptr, false);
+	item* BlueWire = new item("PenWire", "A elastic wire that can be used to create new items", false, BluePen->item_room, NutsGun, PoweredHook, false);
+	item* BlackPlastic = new item("BlackPlastic", "This plastic have been used as a blowgun", true, Desk, NutsGun, nullptr, false);
 	item* Shoelace = new item("Shoelace", "This item is usefull to craft recheable items", true, UnderBed, Hook, Catapult, false);
 	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, BehindDoor, Hook, FireNeedle, false);
-	item* MouseTrap = new item("Mouse trap", "Seems that the cheese have been eaten, but the mouse is still alive", true, MouseCave, Catapult, nullptr, false);
+	item* MouseTrap = new item("MouseTrap", "Seems that the cheese have been eaten, but the mouse is still alive", true, MouseCave, Catapult, nullptr, false);
 	item* Nuts = new item("Nuts", "A delicious snack for humans", true, BedsideTable, NutsGunLoaded, nullptr, false);
 	item* MatchStick = new item("MatchStick", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr, false);
 	
@@ -105,10 +105,10 @@ void World::CreateWorld()
 	world_items.push_back(Nuts);
 	world_items.push_back(MatchStick);
 
-	my_string dir("north south west east");
+	my_string dir("north south west east up down");
 	dir.tokenize(" ", directions);
 	
-	my_string com("exit help look go");
+	my_string com("exit help look go open close");
 	com.tokenize(" ", comands);
 	
 }
@@ -127,16 +127,16 @@ bool World::finish_game( const dynamic_array<char*>& divided_action)
 void World::action(const dynamic_array<char*>& divided_action)
 {
 
-
-	if (divided_action.compare(comands, 1) == true){
+	//HELP
+	if (divided_action.compare(comands, 1) == true)
+	{
 		printf("Welcome to Zork\nControls:\n-To exit type quit\n-To move you can use comand go.\nexample : go north, go south, go east, go west, go up, go down.\n\n");
 		printf("-To look the room where you are use look and the direction.\n It will says how it is the room where you are and the\n exits that it have.\n");
 		printf(" You can also look only an exit, looking the direction.\nexample : look room, look north, look east...\n\n-Somewhere there will be closed doors, use open to pass or\n");
 		printf(" close to close the door you actually open.\nexample : open north, open south, open up, close south...\n\n");
-
 	}
 
-
+	//LOOK
 	if (divided_action.compare(comands, 2))
 	{
 		if (divided_action.get_size() == 1) player->looking(world_exits, world_items);
@@ -147,32 +147,38 @@ void World::action(const dynamic_array<char*>& divided_action)
 		}		
 	}
 
+	//MOVEMENT
 	if (divided_action.compare(comands, 3) && divided_action.compare(directions))
 		player->movement(divided_action, world_exits, 1);
 
 	else 
 	{ 
-		if (divided_action.compare(directions)) 
+		if (divided_action.compare(directions) && divided_action.get_size() == 1) 
 		player->movement(divided_action, world_exits, 0); 
 	}
 	
-
-}
-
-	/*
-	
-
-	if (equal_open_close[0] == 0 || equal_open_close[1] == 0 || equal_open_close[2] == 0 || equal_open_close[3] == 0)
+	//OPEN
+	if (divided_action.compare(comands, 4))
 	{
-		if (second_word != NULL)
+		if (divided_action.compare(directions))
 		{
-			player->open_close_door(first_word, second_word, exits);
+			player->open_door(divided_action, world_exits);
+		}
+		else printf("I need a direction using this comand\n");
+	}
+
+	//CLOSE
+	if (divided_action.compare(comands, 5))
+	{
+		if (divided_action.compare(directions))
+		{
+			player->close_door(divided_action, world_exits);
 		}
 		else printf("I need a direction using this comand\n");
 	}
 	
 }
-*/
+
 
 //This prints the room name and the description of where you are, and it's exits directions
 void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item*>& items)
@@ -189,12 +195,12 @@ void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item
 		}
 	}
 
-	printf("\nItems in the room:");
+	printf("\nItems in the room: ");
 	for (int i = 0; i < items.get_size(); i++)
 	{
-		if (items[i]->item_room == player_room) 
+		if (items[i]->item_room == player_room && items[i]->dropped == true) 
 		{
-			printf(" %s", items[i]->name);
+			printf(" %s,", items[i]->name);
 			no_items = false;
 		}
 	}
@@ -219,12 +225,14 @@ void Player::looking_exits(const dynamic_array<char*>& divided_action, const dyn
 	if (no_exit) printf("there isn't any exits in this direction\n");	
 }
 
+//This will give the description of the item asked
 void Player::looking_items(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items)
 {
 	for (int i = 0; i < items.get_size(); i++)
 	{
-		if (divided_action.compare(items[i]->name.c_str()) && items[i]->item_room == player_room){
-			printf("%s", items[i]->description);
+		if (divided_action.compare(items[i]->name.c_str()) && items[i]->item_room == player_room)
+		{
+			printf("%s,", items[i]->description);
 		}
 	}
 }
@@ -266,29 +274,23 @@ void Player::movement(const dynamic_array<char*>& divided_action, const dynamic_
 	
 }
 
-/*
+
 //This function lets the player open and close paths changing the boolen open from the exits
-void Player::open_close_door(const char first_word[], const char second_word[], Exit* exits){
-
-	int open = strcmp(first_word, "open");
-	int close = strcmp(first_word, "close");
-	int counter_open = 0;
-	int counter_close = 0;
-
-
-	if (open == 0){						//this part of the code search for an exit which is in the same room of the player and the same direction introduced
-		for (int j = 0; j < 26; j++)	//If it is found the boolean changes to true(open) and if it is not it prints an error 
+void Player::open_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)
+{
+		int counter_open = 0;						
+		for (unsigned int j = 0; j < exits.get_size(); j++)
 		{
-			int equal_direction = strcmp(second_word, (exits + j)->direction);
-			if ((exits + j)->origen == player_room && equal_direction == 0)
+			
+			if (exits[j]->origen == player_room && exits[j]->name == divided_action.vector[1])
 			{
-				if ((exits + j)->open == true)
+				if (exits[j]->open == true)
 				{
 					printf("This path is already open\n");
 				}
 				else 
 				{
-					(exits + j)->open = true;
+					exits[j]->open = true;
 					printf("The path is open\n");
 				}
 				counter_open++;
@@ -300,20 +302,21 @@ void Player::open_close_door(const char first_word[], const char second_word[], 
 			printf("There is nothing to open this way\n");
 		}
 	}
-
-	if (close == 0){						//Does exactly the same than the open one but closing the boolean (false)
-		for (int j = 0; j < 26; j++)
+void Player::close_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)
+{			
+		int counter_close = 0;
+		for (unsigned int j = 0; j < exits.get_size(); j++)
 		{
-			int equal_direction = strcmp(second_word, (exits + j)->direction);
-			if ((exits + j)->origen == player_room && equal_direction == 0)
+
+			if (exits[j]->origen == player_room && exits[j]->name == divided_action.vector[1])
 			{
-				if ((exits + j)->open == false)
+				if (exits[j]->open == false)
 				{
 					printf("This path is already closed\n");
 				}
 				else
 				{
-					(exits + j)->open = false;
+					exits[j]->open = false;
 					printf("The path is closed\n");
 				}
 				counter_close++;
@@ -326,6 +329,5 @@ void Player::open_close_door(const char first_word[], const char second_word[], 
 		}
 	}
 
-}
 
-*/
+
