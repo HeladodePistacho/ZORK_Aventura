@@ -17,8 +17,8 @@ my_string::my_string(const char* str)
 
 my_string::my_string()
 {
-	buffer = new char[100];
-	reserved_memory = 100;
+	buffer = new char[30];
+	reserved_memory = 30;
 }
 
 my_string::my_string(const my_string& str)
@@ -134,6 +134,18 @@ void my_string::operator=(const my_string& str)
 
 }
 
+void my_string::operator=(const char* str)
+{
+	unsigned int len = strlen(str) + 1;
+	if (len > reserved_memory)
+	{
+		delete[]buffer;
+		reserved_memory = len;
+		buffer = new char[reserved_memory];
+	}
+	strcpy_s(buffer, reserved_memory, str);
+}
+
 unsigned int my_string::capacity() const
 {
 	return reserved_memory;
@@ -160,9 +172,10 @@ void my_string::shrink_to_fit(){
 	}
 }
 
-void my_string::tokenize(const char* break_buffer)
+void my_string::tokenize(const char* break_buffer,char* action, dynamic_array<char*>& phrase)
 {
-	char* phrase_member = strtok(buffer, break_buffer);
+	
+	char* phrase_member = strtok(action, break_buffer);
 	phrase.push_back(phrase_member);
 	while ((phrase_member = strtok(NULL, break_buffer)) != NULL)
 	{
@@ -171,7 +184,15 @@ void my_string::tokenize(const char* break_buffer)
 
 }
 
-dynamic_array <char*> my_string::GetVector() const
+void my_string::tokenize(const char* break_buffer, dynamic_array<char*>& phrase)
 {
-	return phrase;
+	char* temp_buff = new char[reserved_memory];
+	strcpy(temp_buff, buffer);
+	char* phrase_member = strtok(temp_buff, break_buffer);
+	phrase.push_back(phrase_member);
+	while ((phrase_member = strtok(NULL, break_buffer)) != NULL)
+	{
+		phrase.push_back(phrase_member);
+	}
+
 }

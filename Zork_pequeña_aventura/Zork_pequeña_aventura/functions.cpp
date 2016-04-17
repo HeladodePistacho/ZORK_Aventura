@@ -87,7 +87,7 @@ void World::CreateWorld()
 	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, BehindDoor, Hook, FireNeedle, false);
 	item* MouseTrap = new item("Mouse trap", "Seems that the cheese have been eaten, but the mouse is still alive", true, MouseCave, Catapult, nullptr, false);
 	item* Nuts = new item("Nuts", "A delicious snack for humans", true, BedsideTable, NutsGunLoaded, nullptr, false);
-	item* MatchStick = new item("MatchStic", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr, false);
+	item* MatchStick = new item("MatchStick", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr, false);
 	
 	world_items.push_back(BluePen);
 	world_items.push_back(PoweredHook);
@@ -104,60 +104,63 @@ void World::CreateWorld()
 	world_items.push_back(MouseTrap);
 	world_items.push_back(Nuts);
 	world_items.push_back(MatchStick);
+
+	my_string dir("north south west east");
+	dir.tokenize(" ", directions);
+	
+	my_string com("exit help look go");
+	com.tokenize(" ", comands);
+	
 }
 
-/*
+
 
 //This function looks if first_word == quit, if it is returns 1, and that finish the game.
-bool World::finish_game(const char first_word[]) 
+bool World::finish_game( const dynamic_array<char*>& divided_action)
 {
-	int equal_quit[2] = { strcmp(first_word, "quit"), strcmp(first_word, "Quit") };
-
-	if (equal_quit[0] == 0 || equal_quit[1] == 0){
-		return true;
-	}
-	else return false;
+	
+	return divided_action.compare(comands, 0);
 }
 
+
 //This is the big function that have all the others, it compares the strings and do what is asked to do.
-void World::action(const char first_word[], const char second_word[], Player* player, Rooms* actualroom, Exit* exits) 
+void World::action(const dynamic_array<char*>& divided_action)
 {
 
-	int equal_help[2] = { strcmp(first_word, "help"), strcmp(first_word, "Help") };  //This vector has a 0 if first_word == help, or first_word == Help
-	int equal_look[2] = { strcmp(first_word, "look"), strcmp(first_word, "Look") };
-	int equal_directions[12] = { strcmp(first_word, "north"), strcmp(first_word, "n"), strcmp(first_word, "south"), strcmp(first_word, "s"), strcmp(first_word, "west"), strcmp(first_word, "w"), strcmp(first_word, "east"), strcmp(first_word, "e"), strcmp(first_word, "up"), strcmp(first_word, "u"), strcmp(first_word, "down"), strcmp(first_word, "d") };
-	int equal_go[2] = { strcmp(first_word, "go"), strcmp(first_word, "Go") };
-	int equal_open_close[4] = { strcmp(first_word, "open"), strcmp(first_word, "Open"), strcmp(first_word, "close"), strcmp(first_word, "Close") };
 
-	if (equal_help[0] == 0 || equal_help[1] == 0){
+	if (divided_action.compare(comands, 1) == true){
 		printf("Welcome to Zork\nControls:\n-To exit type quit\n-To move you can use comand go.\nexample : go north, go south, go east, go west, go up, go down.\n\n");
 		printf("-To look the room where you are use look and the direction.\n It will says how it is the room where you are and the\n exits that it have.\n");
 		printf(" You can also look only an exit, looking the direction.\nexample : look room, look north, look east...\n\n-Somewhere there will be closed doors, use open to pass or\n");
 		printf(" close to close the door you actually open.\nexample : open north, open south, open up, close south...\n\n");
-		
+
 	}
 
 
-	if (equal_look[0] == 0 || equal_look[1] == 0){
-
-		if (second_word != NULL){
-			player->looking_exits(second_word, exits);
-		}
-
-		else player->looking(exits);
+	if (divided_action.compare(comands, 2))
+	{
+		if (divided_action.get_size() == 1) player->looking(world_exits, world_items);
+		else
+		{
+			if (divided_action.compare(directions)) player->looking_exits(divided_action, world_exits);
+			else player->looking_items(divided_action, world_items);
+		}		
 	}
 
+	if (divided_action.compare(comands, 3) && divided_action.compare(directions))
+		player->movement(divided_action, world_exits, 1);
 
-	if (equal_go[0] == 0 || equal_go[1] == 0){
-		player->movement(second_word, exits);
+	else 
+	{ 
+		if (divided_action.compare(directions)) 
+		player->movement(divided_action, world_exits, 0); 
 	}
-	else{
-		for (int i = 0; i < 12; i++){
-			if (equal_directions[i] == 0){
-				player->movement(first_word, exits);
-			}
-		}
-	}
+	
+
+}
+
+	/*
+	
 
 	if (equal_open_close[0] == 0 || equal_open_close[1] == 0 || equal_open_close[2] == 0 || equal_open_close[3] == 0)
 	{
@@ -167,75 +170,95 @@ void World::action(const char first_word[], const char second_word[], Player* pl
 		}
 		else printf("I need a direction using this comand\n");
 	}
+	
 }
+*/
 
 //This prints the room name and the description of where you are, and it's exits directions
-void Player::looking(Exit* exits)
+void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item*>& items)
 {
+	bool no_items = true;
 	printf("%s\n", player_room->name);
 	printf("%s\n", player_room->description);
 	printf("There is an exit going:");
-	for (int j = 0; j < 26; j++){
-		if ((exits + j)->origen == player_room){
-			printf(" %s, ", (exits + j)->direction);
+	for (int j = 0; j < exits.get_size(); j++)
+	{
+		if (exits[j]->origen == player_room)
+		{
+			printf(" %s,", exits[j]->name);
 		}
-
 	}
+
+	printf("\nItems in the room:");
+	for (int i = 0; i < items.get_size(); i++)
+	{
+		if (items[i]->item_room == player_room) 
+		{
+			printf(" %s", items[i]->name);
+			no_items = false;
+		}
+	}
+
+	if (no_items) printf("none");
 	printf("\n");
 
 }
 
 //This will give the description of the exit asked
-void Player::looking_exits(const char second_word[], const Exit* exits){
-	int counter = 0;	//if counter == 0 at the end of the loop there isn't a room in the direction said								
-	for (int j = 0; j < 26; j++){
-		int equal = strcmp(second_word, (exits + j)->name);
+void Player::looking_exits(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits){
+	bool no_exit = true;
 
-		if ((exits + j)->origen == player_room && equal == 0){
-			printf("%s\n", (exits + j)->description);
-			counter++;
+	for (int j = 0; j < exits.get_size(); j++){
+
+		if (divided_action.compare(exits[j]->name.c_str()) && exits[j]->origen == player_room)
+		{
+			printf("%s\n", exits[j]->description);
+			no_exit = false;
 		}
 	}
-	if (counter == 0){
-		printf("there isn't any exits in this direction\n");
+	if (no_exit) printf("there isn't any exits in this direction\n");	
+}
+
+void Player::looking_items(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items)
+{
+	for (int i = 0; i < items.get_size(); i++)
+	{
+		if (divided_action.compare(items[i]->name.c_str()) && items[i]->item_room == player_room){
+			printf("%s", items[i]->description);
+		}
 	}
 }
 
+
 //This looks if the path is open or closed. If it is open, then search for the exit with the direction you asked for 
 //and changes the player_room for the destiny room of the exit and prints it name. If it is close don't let you pass
-void Player::movement(const char first_word[],const Exit exits[]){
-
+void Player::movement(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits, unsigned int position)
+{
 	bool door_closed = true;
 	bool recheable_room = false;
-	int equal_direction;
-	
-	
-	for (int j = 0; j < 26; j++){
 
-		equal_direction = strcmp(first_word, exits[j].direction);
+	for (int j = 0; j < exits.get_size(); j++){
 
-		if (exits[j].open == true && exits[j].origen == player_room)
+		if (exits[j]->open == true && exits[j]->origen == player_room && exits[j]->name == divided_action.vector[position])
 		{
-
-			if (equal_direction == 0)
-			{
-				player_room = exits[j].destiny;
-				printf("%s\n", player_room->name);
-				recheable_room = true;
-				break;
-			}
+		
+			player_room = exits[j]->destiny;
+			printf("%s\n", player_room->name);
+			recheable_room = true;
+			break;
+				
 			
 		}
 		else {
-			if (exits[j].open == false && exits[j].origen == player_room)
+			if (exits[j]->open == false && exits[j]->origen == player_room)
 			{
-				if (equal_direction == 0) door_closed = false;
+				door_closed = false;
 			}
 		}
 	}
-	if (door_closed == false){
-		printf("You can't go this way, the path is closed\n");
-	}
+	if (door_closed == false) printf("You can't go this way, the path is closed\n");
+		
+	
 	else if (recheable_room == false)
 	{
 		printf("You can't go this way\n");
@@ -243,6 +266,7 @@ void Player::movement(const char first_word[],const Exit exits[]){
 	
 }
 
+/*
 //This function lets the player open and close paths changing the boolen open from the exits
 void Player::open_close_door(const char first_word[], const char second_word[], Exit* exits){
 

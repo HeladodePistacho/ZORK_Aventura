@@ -15,20 +15,22 @@ public:
 	dynamic_array <Rooms*> world_rooms;
 	dynamic_array <Exit*> world_exits;
 	dynamic_array <item*> world_items;
+	dynamic_array <char*> comands;
+	dynamic_array <char*> directions;
 
 public:
 
 	World()
 	{
-		
+		CreateWorld();
 	}
 	~World()
 	{
 		delete player;	
 	}
 	void CreateWorld();
-	bool finish_game(const char first_word[]);
-	void action(const char first_word[], const char second_word[], Player* player, Rooms* actualroom, Exit* exits);
+	bool finish_game(const dynamic_array<char*>&);
+	void action(const dynamic_array<char*>&);
 };
 
 

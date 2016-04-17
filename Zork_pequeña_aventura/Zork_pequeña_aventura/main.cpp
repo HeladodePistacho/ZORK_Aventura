@@ -12,38 +12,25 @@
 
 int main()
 {
-	char action[50];
+	dynamic_array<char*> divided_action;
+	my_string main_action;
 	World map;
-	gets(action);
+	char action[50];
+	bool finish;
 
-	my_string main_action(action);
-	main_action.tokenize(" ");
-	main_action.GetVector()[0];
-	main_action.GetVector()[1];
-	main_action.GetVector()[2];
-	main_action.GetVector()[3];
-
-	/*do
+	do
 	{
-		do{
-			printf("What's your next action?\n");
-			gets(action);
+		printf("What's your next action?\n");
+		gets(action);
+		main_action.tokenize(" ", action, divided_action);
 
-			second_word = strtok(action, break_action);
-			first_word = second_word;
-			second_word = strtok(NULL, break_action);
-
-		} while (first_word == NULL);
-
-			map.action(first_word, second_word, map.player, map.rooms, map.exits);
-			finish = map.finish_game(first_word);
-
-			printf("\n\n");
+		map.action(divided_action);
+		finish = map.finish_game(divided_action);
+		divided_action.clean();
+		printf("\n\n");
 
 	} while (finish == false);
 
-	*/
-	system("pause");
 	return 0;
 
 };

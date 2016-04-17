@@ -1,7 +1,8 @@
 #ifndef _ARRAY_DINAMIC_
 #define _ARRAY_DINAMIC_
 
-//empty, clean, size, capacity, pop back, shrink to fit.
+#include"my_string.h"
+
 
 template <class TYPE>
 
@@ -122,29 +123,53 @@ public:
 		return capacity;
 	}
 
-	void pop_back()
+	bool pop_back(TYPE& value)
 	{
-		bool pop_back(TYPE& value)
-		{
 
-			if (num_elements > 0)
-			{
-				num_elements--;
-				value = vector[num_elements];
-				return true;
-			}
-			return false;
+		if (num_elements > 0)
+		{
+			num_elements--;
+			value = vector[num_elements];
+			return true;
 		}
+		return false;
+	}
+	
+
+	bool compare(const dynamic_array& str, unsigned int position) const
+	{
+		for (unsigned int i = 0; i < num_elements; i++)
+		{
+			if (strcmp(vector[i], str.vector[position]) == 0) return true;
+		}
+		return false;
+	}
+	
+	bool compare(const dynamic_array<TYPE>& str) const
+	{
+		for (unsigned int i = 0; i < num_elements; i++)
+		{
+			for (unsigned int j = 0; j < str.num_elements; j++)
+			{
+				if (strcmp(vector[i], str.vector[j]) == 0) return true;
+			}
+		}
+		
+		return false;
 	}
 
-
-	
-
-	
-
+	bool compare(const char* str) const
+	{
+		for (unsigned int i = 1; i < num_elements; i++)
+		{
+			if (strcmp(vector[i], str) == 0) return true;
+		}
+		return false;
+	}
 
 
 };
 
+	
 
 #endif

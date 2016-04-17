@@ -14,7 +14,6 @@ private:
 
 	 char* buffer = nullptr;
 	 unsigned int reserved_memory;
-	 dynamic_array <char*> phrase;
 	
 public:
 
@@ -34,16 +33,17 @@ public:
 	my_string operator+(const my_string& str)const;
 	my_string operator+(const char* str) const;
 	void operator=(const my_string& str);
+	void operator=(const char* str);
 
 	void clean();
 	void shrink_to_fit();
 
 	unsigned int capacity() const;
 
-	void tokenize(const char* break_buffer);
-	
+	void tokenize(const char* break_buffer, char* action, dynamic_array<char*>& divided);
+	void tokenize(const char* break_buffer, dynamic_array<char*>& divided);
 
-	dynamic_array <char*> GetVector()const;
+	
 
 };
 
