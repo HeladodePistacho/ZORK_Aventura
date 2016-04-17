@@ -17,6 +17,17 @@ int main()
 	World map;
 	char action[50];
 	bool finish;
+	int p;
+
+	dynamic_array<int> proba;
+	proba.push_back(2);
+	proba.push_back(3);
+	proba.push_back(4);
+	proba.move_element();
+	proba.pop_back(p);
+	proba.push_back(1);
+
+	printf("%i,%i,%i,%i", proba[0], proba[1], proba[2], proba[3]);
 
 	do
 	{

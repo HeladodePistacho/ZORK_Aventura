@@ -108,7 +108,7 @@ void World::CreateWorld()
 	my_string dir("north south west east up down");
 	dir.tokenize(" ", directions);
 	
-	my_string com("exit help look go open close pick");
+	my_string com("exit help look go open close pick drop inventory inv i");
 	com.tokenize(" ", comands);
 	
 }
@@ -182,6 +182,13 @@ void World::action(const dynamic_array<char*>& divided_action)
 	{
 		player->pick(divided_action, world_items);
 	}
+	
+	//DROP
+	if (divided_action.compare(comands, 7))
+	{
+		player->drop(divided_action, world_items);
+	}
+
 }
 
 
@@ -336,19 +343,46 @@ void Player::close_door(const dynamic_array<char*>& divided_action, const dynami
 
 void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items)
 {
-	for (int i = 0; i < items.get_size(); i++)
-	{
-		if (items[i]->item_room == player_room && inventory.get_size() < 3 && items[i]->dropped == true && items[i]->name == divided_action.vector[1])
-		{
-			items[i]->dropped == false;
-			inventory.push_back(items[i]);
-			printf("You putted it into your inventory\n");
-		}
-	}
 
 	if (inventory.get_size() == 3)
 	{
 		printf("Your inventory is full");
 	}
+
+	for (int i = 0; i < items.get_size(); i++)
+	{
+		if (items[i]->item_room == player_room && inventory.get_size() < 3 && items[i]->dropped == true && items[i]->name == divided_action.vector[1])
+		{
+			items[i]->dropped = false;
+			inventory.push_back(items[i]);
+			printf("You putted it into your inventory\n");
+		}
+	}
+
+	
 }
 
+void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array<item*>& items)
+{
+
+	item* poped;
+
+	for (int i = 0; i < items.get_size(); i++)
+	{
+		for (int j = 0; j < inventory.get_size(); j++)
+			{
+				if (items.vector[i] == inventory[j] && items.vector[i]->name == divided_action.vector[1])
+				{
+					for (int k = j; k < inventory.get_size(); k++)
+					{
+						inventory[k] = inventory[k + 1];
+					}
+					items[i]->dropped = true;
+					items[i]->item_room = player_room;
+					inventory.pop_back(poped);
+				}
+			}
+		
+	}
+
+}

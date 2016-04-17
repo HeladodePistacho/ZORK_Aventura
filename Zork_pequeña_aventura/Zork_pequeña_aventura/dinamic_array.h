@@ -168,6 +168,20 @@ public:
 	}
 
 
+	void move_element()
+	{
+		TYPE* changed_vector = new TYPE[num_elements];
+
+		for (int i = 0; i < num_elements; i++)
+		{
+			if (i == 0) changed_vector[num_elements] = vector[0];
+			else changed_vector[i - 1] = vector[i];
+
+		}
+		delete[]vector;
+		vector = changed_vector;
+	}
+
 };
 
 	
