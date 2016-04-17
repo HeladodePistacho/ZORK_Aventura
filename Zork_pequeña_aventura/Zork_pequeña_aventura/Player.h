@@ -17,13 +17,14 @@ public:
 	Player(Rooms* initial_room, unsigned int equip, unsigned int inv) : player_room(initial_room), equiped(equip), inventory(inv){}
 	
 	void movement(const dynamic_array<char*>&, const dynamic_array<Exit*>&, unsigned int);
-	void looking(const dynamic_array<Exit*>&, const dynamic_array<item*>&);
-	void looking_exits(const dynamic_array<char*>&, const dynamic_array<Exit*>&);
-	void looking_items(const dynamic_array<char*>&, const dynamic_array<item*>&);
-	void open_door(const dynamic_array<char*>&, const dynamic_array<Exit*>&);
-	void close_door(const dynamic_array<char*>&, const dynamic_array<Exit*>&);
+	void looking(const dynamic_array<Exit*>&, const dynamic_array<item*>&)const;
+	void looking_exits(const dynamic_array<char*>&, const dynamic_array<Exit*>&)const;
+	void looking_items(const dynamic_array<char*>&, const dynamic_array<item*>&)const;
+	void open_door(const dynamic_array<char*>&, const dynamic_array<Exit*>&)const;
+	void close_door(const dynamic_array<char*>&, const dynamic_array<Exit*>&)const;
 	void pick(const dynamic_array<char*>&, const dynamic_array<item*>&);
 	void drop(const dynamic_array<char*>&, const dynamic_array<item*>&);
+	void Get_inventory()const;
 
 };
 

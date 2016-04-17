@@ -189,11 +189,17 @@ void World::action(const dynamic_array<char*>& divided_action)
 		player->drop(divided_action, world_items);
 	}
 
+	//WATCH INVENTORY
+	if (divided_action.compare(comands, 8) || divided_action.compare(comands, 9) || divided_action.compare(comands, 10))
+	{
+		player->Get_inventory();
+	}
+
 }
 
 
 //This prints the room name and the description of where you are, and it's exits directions
-void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item*>& items)
+void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item*>& items) const
 {
 	bool no_items = true;
 	printf("%s\n", player_room->name);
@@ -223,7 +229,7 @@ void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item
 }
 
 //This will give the description of the exit asked
-void Player::looking_exits(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits){
+void Player::looking_exits(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)const{
 	bool no_exit = true;
 
 	for (int j = 0; j < exits.get_size(); j++){
@@ -238,7 +244,7 @@ void Player::looking_exits(const dynamic_array<char*>& divided_action, const dyn
 }
 
 //This will give the description of the item asked
-void Player::looking_items(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items)
+void Player::looking_items(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items)const
 {
 	for (int i = 0; i < items.get_size(); i++)
 	{
@@ -288,7 +294,7 @@ void Player::movement(const dynamic_array<char*>& divided_action, const dynamic_
 
 
 //This function lets the player open and close paths changing the boolen open from the exits
-void Player::open_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)
+void Player::open_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)const
 {
 		int counter_open = 0;						
 		for (unsigned int j = 0; j < exits.get_size(); j++)
@@ -314,7 +320,7 @@ void Player::open_door(const dynamic_array<char*>& divided_action, const dynamic
 			printf("There is nothing to open this way\n");
 		}
 	}
-void Player::close_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)
+void Player::close_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)const
 {			
 		int counter_close = 0;
 		for (unsigned int j = 0; j < exits.get_size(); j++)
@@ -391,4 +397,19 @@ void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array
 		printf("This item is not in your inventory\n");
 	}
 
+}
+
+void Player::Get_inventory()const
+{
+	int nºItems = 0;
+	printf("INVENTORY:\n");
+		for (int i = 0; i < inventory.get_capacity(); i++)
+		{
+			for (nºItems; nºItems < inventory.get_size(); nºItems++)
+			{
+				printf("\t*%s\n", inventory[nºItems]->name.c_str());
+
+			}
+		}	
+		for (int i = 3; i > nºItems; i--) printf("\t*Empty\n");
 }
