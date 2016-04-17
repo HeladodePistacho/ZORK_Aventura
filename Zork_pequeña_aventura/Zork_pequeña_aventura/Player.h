@@ -22,6 +22,7 @@ public:
 	void looking_items(const dynamic_array<char*>&, const dynamic_array<item*>&);
 	void open_door(const dynamic_array<char*>&, const dynamic_array<Exit*>&);
 	void close_door(const dynamic_array<char*>&, const dynamic_array<Exit*>&);
+	void pick(const dynamic_array<char*>&, const dynamic_array<item*>&);
 
 };
 

@@ -87,7 +87,7 @@ void World::CreateWorld()
 	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, BehindDoor, Hook, FireNeedle, false);
 	item* MouseTrap = new item("MouseTrap", "Seems that the cheese have been eaten, but the mouse is still alive", true, MouseCave, Catapult, nullptr, false);
 	item* Nuts = new item("Nuts", "A delicious snack for humans", true, BedsideTable, NutsGunLoaded, nullptr, false);
-	item* MatchStick = new item("MatchStick", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr, false);
+	item* MatchStick = new item("Matchstick", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr, false);
 	
 	world_items.push_back(BluePen);
 	world_items.push_back(PoweredHook);
@@ -108,7 +108,7 @@ void World::CreateWorld()
 	my_string dir("north south west east up down");
 	dir.tokenize(" ", directions);
 	
-	my_string com("exit help look go open close");
+	my_string com("exit help look go open close pick");
 	com.tokenize(" ", comands);
 	
 }
@@ -177,6 +177,11 @@ void World::action(const dynamic_array<char*>& divided_action)
 		else printf("I need a direction using this comand\n");
 	}
 	
+	//PICK
+	if (divided_action.compare(comands, 6))
+	{
+		player->pick(divided_action, world_items);
+	}
 }
 
 
@@ -329,5 +334,21 @@ void Player::close_door(const dynamic_array<char*>& divided_action, const dynami
 		}
 	}
 
+void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items)
+{
+	for (int i = 0; i < items.get_size(); i++)
+	{
+		if (items[i]->item_room == player_room && inventory.get_size() < 3 && items[i]->dropped == true && items[i]->name == divided_action.vector[1])
+		{
+			items[i]->dropped == false;
+			inventory.push_back(items[i]);
+			printf("You putted it into your inventory\n");
+		}
+	}
 
+	if (inventory.get_size() == 3)
+	{
+		printf("Your inventory is full");
+	}
+}
 
