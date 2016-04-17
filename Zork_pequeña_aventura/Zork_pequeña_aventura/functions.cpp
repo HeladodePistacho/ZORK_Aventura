@@ -365,7 +365,7 @@ void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_arra
 void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array<item*>& items)
 {
 
-	item* poped;
+	item* poped = nullptr;
 
 	for (int i = 0; i < items.get_size(); i++)
 	{
@@ -380,9 +380,15 @@ void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array
 					items[i]->dropped = true;
 					items[i]->item_room = player_room;
 					inventory.pop_back(poped);
+					printf("item dropped in the room: %s", player_room->name);
 				}
 			}
 		
+	}
+
+	if (poped == nullptr)
+	{
+		printf("This item is not in your inventory\n");
 	}
 
 }
