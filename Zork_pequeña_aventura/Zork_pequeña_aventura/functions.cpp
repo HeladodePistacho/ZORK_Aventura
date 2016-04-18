@@ -105,10 +105,10 @@ void World::CreateWorld()
 	world_items.push_back(Nuts);
 	world_items.push_back(MatchStick);
 
-	my_string dir("north south west east up down");
+	my_string dir("north south west east up down n s w e");
 	dir.tokenize(" ", directions);
 	
-	my_string com("exit help look go open close pick drop inventory inv i");
+	my_string com("exit help look go open close pick drop inventory inv i equip unequip");
 	com.tokenize(" ", comands);
 	
 }
@@ -193,6 +193,13 @@ void World::action(const dynamic_array<char*>& divided_action)
 	if (divided_action.compare(comands, 8) || divided_action.compare(comands, 9) || divided_action.compare(comands, 10))
 	{
 		player->Get_inventory();
+	}
+
+	//EQUP
+
+	if (divided_action.compare(comands, 11))
+	{
+		player->equip(divided_action);
 	}
 
 }
@@ -320,6 +327,7 @@ void Player::open_door(const dynamic_array<char*>& divided_action, const dynamic
 			printf("There is nothing to open this way\n");
 		}
 	}
+
 void Player::close_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)const
 {			
 		int counter_close = 0;
@@ -411,5 +419,39 @@ void Player::Get_inventory()const
 
 			}
 		}	
-		for (int i = 3; i > nºItems; i--) printf("\t*Empty\n");
+		for (int i = 3; i > nºItems; i--)  printf("\t*Empty\n"); 
+
+		printf("EQUIP\n");
+		int nºEquiped = 0;
+
+		for (int i = 0; i < equiped.get_capacity(); i++)
+		{
+			for (nºEquiped; nºEquiped < equiped.get_size(); nºEquiped++)
+			{
+				printf("\t*%s\n", equiped[nºEquiped]->name.c_str());
+			}
+		}
+		for (int i = 2; i > nºEquiped; i--) printf("\t*Empty\n");
+
+	
+}
+
+void Player::equip(const dynamic_array<char*>& divided_action)
+{
+	item* poped;
+
+	for (int i = 0; i < inventory.get_size(); i++)
+	{
+		if (inventory.vector[i]->name == divided_action.vector[1])
+		{
+
+			equiped.push_back(inventory[i]);
+
+			for (int k = i; k < inventory.get_size(); k++)
+			{
+				inventory[k] = inventory[k + 1];
+			}
+			inventory.pop_back(poped);
+		}
+	}
 }
