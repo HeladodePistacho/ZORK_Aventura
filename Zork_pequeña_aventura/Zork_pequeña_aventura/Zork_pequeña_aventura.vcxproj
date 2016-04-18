@@ -69,6 +69,7 @@
     <ClCompile Include="my_string.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Box.h" />
     <ClInclude Include="dinamic_array.h" />
     <ClInclude Include="Exits.h" />
     <ClInclude Include="Items.h" />
