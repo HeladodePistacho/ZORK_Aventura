@@ -196,10 +196,15 @@ void World::action(const dynamic_array<char*>& divided_action)
 	}
 
 	//EQUP
-
 	if (divided_action.compare(comands, 11))
 	{
 		player->equip(divided_action);
+	}
+
+	//UNEQUIP
+	if (divided_action.compare(comands, 12))
+	{
+		player->unequip(divided_action);
 	}
 
 }
@@ -438,7 +443,7 @@ void Player::Get_inventory()const
 
 void Player::equip(const dynamic_array<char*>& divided_action)
 {
-	item* poped;
+	item* poped = nullptr;
 
 	for (int i = 0; i < inventory.get_size(); i++)
 	{
@@ -452,6 +457,44 @@ void Player::equip(const dynamic_array<char*>& divided_action)
 				inventory[k] = inventory[k + 1];
 			}
 			inventory.pop_back(poped);
+			printf("Item Equiped\n");
+		}
+	}
+
+	if (poped == nullptr)
+	{
+		printf("This item is not in your inventory\n");
+	}
+
+}
+
+void Player::unequip(const dynamic_array<char*>& divided_action)
+{
+	item* poped = nullptr;
+
+	if (inventory.get_size() == 3)
+	{
+		printf("Your inventory is full\n");
+	}
+	else{
+		for (int i = 0; i < equiped.get_size(); i++)
+		{
+			if (equiped.vector[i]->name == divided_action[1])
+			{
+				inventory.push_back(equiped[i]);
+
+				for (int k = i; i < inventory.get_size(); i++)
+				{
+					equiped[i] = equiped[i + 1];
+				}
+
+				equiped.pop_back(poped);
+				printf("Item Unequiped\n");
+			}
+		}
+		if (poped == nullptr)
+		{
+			printf("This item is not equiped\n");
 		}
 	}
 }

@@ -26,6 +26,7 @@ public:
 	void drop(const dynamic_array<char*>&, const dynamic_array<item*>&);
 	void Get_inventory()const;
 	void equip(const dynamic_array<char*>&);
+	void unequip(const dynamic_array<char*>&);
 };
 
 #endif
