@@ -77,14 +77,14 @@ void World::CreateWorld()
 
 	//ITEMS
 
-	item* BluePen = new item("BluePen", "A standar pen, maybe you can do something with it", true, Desk, nullptr, nullptr);
+	
 	item* PoweredHook = new item("PoweredHook", "This awesome improved hook will help you to reach the wardrobe roof", false, nullptr, nullptr, nullptr);
 	item* NutsGunLoaded = new item("NutsGunLoaded", "Fully reloaded and ready to shoot", false, nullptr, nullptr, nullptr);
 	item* Catapult = new item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, nullptr, nullptr, nullptr);
 	item* FireNeedle = new item("FireNeedle", "Improved needle with a incandescent needle tip, it is a super awesome weapon", false, nullptr, nullptr, nullptr);
 	item* NutsGun = new item("NutsGun", "This powerfull weapon is perfect to fight from distance, but you have no ammo", false, nullptr, NutsGunLoaded, nullptr);
 	item* Hook = new item("Hook", "This hook will help you to reach higher positions", false, nullptr, PoweredHook, nullptr);
-	item* BlueWire = new item("PenWire", "A elastic wire that can be used to create new items", false, BluePen->item_room, NutsGun, PoweredHook);
+	item* BlueWire = new item("PenWire", "A elastic wire that can be used to create new items", true, Desk, NutsGun, PoweredHook);
 	item* BlackPlastic = new item("BlackPlastic", "This plastic have been used as a blowgun", true, Desk, NutsGun, nullptr);
 	item* Shoelace = new item("Shoelace", "This item is usefull to craft recheable items", true, UnderBed, Hook, Catapult);
 	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, BehindDoor, Hook, FireNeedle);
@@ -92,7 +92,7 @@ void World::CreateWorld()
 	item* Nuts = new item("Nuts", "A delicious snack for humans", true, BedsideTable, NutsGunLoaded, nullptr);
 	item* MatchStick = new item("Matchstick", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr);
 	
-	world_items.push_back(BluePen);
+	
 	world_items.push_back(PoweredHook);
 	world_items.push_back(NutsGunLoaded);
 	world_items.push_back(Catapult);
@@ -110,7 +110,7 @@ void World::CreateWorld()
 	my_string dir("north south west east up down n s w e");
 	dir.tokenize(" ", directions);
 	
-	my_string com("exit help look go open close pick drop inventory inv i equip unequip put into get from");
+	my_string com("exit help look go open close pick drop inventory inv i equip unequip put into get from combine");
 	com.tokenize(" ", comands);
 	
 }
@@ -220,6 +220,12 @@ void World::action(const dynamic_array<char*>& divided_action)
 	{
 		player->get(divided_action, *Box);
 	}
+
+	//COMBINE
+	if (divided_action.compare(comands, 17))
+	{
+		player->combine(world_items);
+	}
 }
 
 
@@ -274,7 +280,7 @@ void Player::looking_items(const dynamic_array<char*>& divided_action, const dyn
 {
 	for (int i = 0; i < items.get_size(); i++)
 	{
-		if (divided_action.compare(items[i]->name.c_str()) && items[i]->item_room == player_room)
+		if (items[i]->name == divided_action[1] && (items[i]->item_room == player_room || items[i]->picked == true))
 		{
 			printf("%s,", items[i]->description);
 		}
@@ -395,15 +401,17 @@ void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_arra
 	if (inventory.get_size() == 3)
 	{
 		printf("Your inventory is full");
-	}
 
-	for (int i = 0; i < items.get_size(); i++)
-	{
-		if (items[i]->item_room == player_room && inventory.get_size() < 3 && items[i]->dropped == true && items[i]->name == divided_action.vector[1])
+
+		for (int i = 0; i < items.get_size(); i++)
 		{
-			items[i]->dropped = false;
-			inventory.push_back(items[i]);
-			printf("You putted it into your inventory\n");
+			if (items[i]->item_room == player_room && items[i]->dropped == true && items[i]->name == divided_action.vector[1])
+			{
+				items[i]->dropped = false;
+				items[i]->picked = true;
+				inventory.push_back(items[i]);
+				printf("You putted it into your inventory\n");
+			}
 		}
 	}
 
@@ -424,6 +432,7 @@ void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array
 				{
 					inventory.move_element(i);
 					items[i]->dropped = true;
+					items[i]->picked = false;
 					items[i]->item_room = player_room;
 					inventory.pop_back(poped);
 					printf("item dropped in the room: %s", player_room->name);
@@ -557,11 +566,44 @@ void Player::get(const dynamic_array<char*>& divided_action, box& Box)
 			if (Box.storage[i]->name == divided_action[1])
 			{
 				inventory.push_back(Box.storage[i]);
-				Box.storage.move_element(i);
-				Box.storage.pop_back(poped);
 				printf("%s is now on your inventory\n", Box.storage[i]->name.c_str());
+				Box.storage.move_element(i);
+				Box.storage.pop_back(poped);	
 			}
 		}
 	}
 	else printf("Your inventory is full\n");
 }
+
+void Player::combine(const dynamic_array<item*>& items)
+{
+	item* poped;
+
+		if (equiped.get_size() == 2)
+		{
+			
+				if (equiped.vector[0]->craftable_item1 == equiped.vector[1]->craftable_item1 || equiped.vector[0]->craftable_item1 == equiped.vector[1]->craftable_item2)
+				{
+					printf("You created the %s\n", equiped.vector[0]->craftable_item1->name.c_str());
+					equiped.pop_back(poped);
+					equiped.push_front(equiped.vector[0]->craftable_item1);
+					equiped.pop_back(poped);
+					equiped.vector[0]->picked = true;
+				}
+			
+			else {
+				if (equiped.vector[0]->craftable_item2 == equiped.vector[1]->craftable_item1 || equiped.vector[0]->craftable_item2 == equiped.vector[1]->craftable_item2)
+				{
+					printf("You created the %s\n", equiped.vector[0]->craftable_item2->name.c_str());
+					equiped.pop_back(poped);
+					equiped.push_front(equiped.vector[0]->craftable_item1);
+					equiped.pop_back(poped);
+					equiped.vector[0]->picked = true;
+				}
+
+			}
+		}
+		else printf("You will need one more item to combine\n");
+
+	}
+

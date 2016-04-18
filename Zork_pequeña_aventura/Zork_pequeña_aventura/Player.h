@@ -30,6 +30,7 @@ public:
 	void unequip(const dynamic_array<char*>&);
 	void put(const dynamic_array<char*>&, box&);
 	void get(const dynamic_array<char*>&, box&);
+	void combine(const dynamic_array<item*>&);
 };
 
 #endif

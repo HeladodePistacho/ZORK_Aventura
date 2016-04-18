@@ -12,6 +12,7 @@ public:
 	item* craftable_item2;
 	Rooms* item_room;
 	bool dropped;
+	bool picked;
 
 public:
 
@@ -21,6 +22,7 @@ public:
 		craftable_item1 = craft_item;
 		craftable_item2 = craft_item2;
 		type = ITEM;
+		picked = false;
 	}
 
 
