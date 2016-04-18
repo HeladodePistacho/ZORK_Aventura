@@ -3,6 +3,7 @@
 #include "Exits.h"
 #include "Player.h"
 #include "Rooms.h"
+#include "Box.h"
 #include "Items.h"
 #include <stdio.h>
 
@@ -71,29 +72,30 @@ void World::CreateWorld()
 	//PLAYER
 	player = new Player(Desk, 2, 3);
 
+	//BOX
+	Box = new box("Box", "This box can store items", Desk);
+
 	//ITEMS
 
-	item* BluePen = new item("BluePen", "A standar pen, maybe you can do something with it", true, Desk, nullptr, nullptr, false);
-	item* PoweredHook = new item("PoweredHook", "This awesome improved hook will help you to reach the wardrobe roof", false, nullptr, nullptr, nullptr, false);
-	item* NutsGunLoaded = new item("NutsGunLoaded", "Fully reloaded and ready to shoot", false, nullptr, nullptr, nullptr, false);
-	item* Catapult = new item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, nullptr, nullptr, nullptr, false);
-	item* Backpack = new item("Backpack", "Perfect to carry more stuff", true, UnderWardrobe, nullptr, nullptr, true);
-	item* FireNeedle = new item("FireNeedle", "Improved needle with a incandescent needle tip, it is a super awesome weapon", false, nullptr, nullptr, nullptr, false);
-	item* NutsGun = new item("NutsGun", "This powerfull weapon is perfect to fight from distance, but you have no ammo", false, nullptr, NutsGunLoaded, nullptr, false);
-	item* Hook = new item("Hook", "This hook will help you to reach higher positions", false, nullptr, PoweredHook, nullptr, false);
-	item* BlueWire = new item("PenWire", "A elastic wire that can be used to create new items", false, BluePen->item_room, NutsGun, PoweredHook, false);
-	item* BlackPlastic = new item("BlackPlastic", "This plastic have been used as a blowgun", true, Desk, NutsGun, nullptr, false);
-	item* Shoelace = new item("Shoelace", "This item is usefull to craft recheable items", true, UnderBed, Hook, Catapult, false);
-	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, BehindDoor, Hook, FireNeedle, false);
-	item* MouseTrap = new item("MouseTrap", "Seems that the cheese have been eaten, but the mouse is still alive", true, MouseCave, Catapult, nullptr, false);
-	item* Nuts = new item("Nuts", "A delicious snack for humans", true, BedsideTable, NutsGunLoaded, nullptr, false);
-	item* MatchStick = new item("Matchstick", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr, false);
+	item* BluePen = new item("BluePen", "A standar pen, maybe you can do something with it", true, Desk, nullptr, nullptr);
+	item* PoweredHook = new item("PoweredHook", "This awesome improved hook will help you to reach the wardrobe roof", false, nullptr, nullptr, nullptr);
+	item* NutsGunLoaded = new item("NutsGunLoaded", "Fully reloaded and ready to shoot", false, nullptr, nullptr, nullptr);
+	item* Catapult = new item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, nullptr, nullptr, nullptr);
+	item* FireNeedle = new item("FireNeedle", "Improved needle with a incandescent needle tip, it is a super awesome weapon", false, nullptr, nullptr, nullptr);
+	item* NutsGun = new item("NutsGun", "This powerfull weapon is perfect to fight from distance, but you have no ammo", false, nullptr, NutsGunLoaded, nullptr);
+	item* Hook = new item("Hook", "This hook will help you to reach higher positions", false, nullptr, PoweredHook, nullptr);
+	item* BlueWire = new item("PenWire", "A elastic wire that can be used to create new items", false, BluePen->item_room, NutsGun, PoweredHook);
+	item* BlackPlastic = new item("BlackPlastic", "This plastic have been used as a blowgun", true, Desk, NutsGun, nullptr);
+	item* Shoelace = new item("Shoelace", "This item is usefull to craft recheable items", true, UnderBed, Hook, Catapult);
+	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, BehindDoor, Hook, FireNeedle);
+	item* MouseTrap = new item("MouseTrap", "Seems that the cheese have been eaten, but the mouse is still alive", true, MouseCave, Catapult, nullptr);
+	item* Nuts = new item("Nuts", "A delicious snack for humans", true, BedsideTable, NutsGunLoaded, nullptr);
+	item* MatchStick = new item("Matchstick", "A usefull matchstick that can provide light and heat", true, Desk, FireNeedle, nullptr);
 	
 	world_items.push_back(BluePen);
 	world_items.push_back(PoweredHook);
 	world_items.push_back(NutsGunLoaded);
 	world_items.push_back(Catapult);
-	world_items.push_back(Backpack);
 	world_items.push_back(FireNeedle);
 	world_items.push_back(NutsGun);
 	world_items.push_back(Hook);
@@ -108,7 +110,7 @@ void World::CreateWorld()
 	my_string dir("north south west east up down n s w e");
 	dir.tokenize(" ", directions);
 	
-	my_string com("exit help look go open close pick drop inventory inv i equip unequip");
+	my_string com("exit help look go open close pick drop inventory inv i equip unequip put into get from");
 	com.tokenize(" ", comands);
 	
 }
@@ -139,11 +141,11 @@ void World::action(const dynamic_array<char*>& divided_action)
 	//LOOK
 	if (divided_action.compare(comands, 2))
 	{
-		if (divided_action.get_size() == 1) player->looking(world_exits, world_items);
+		if (divided_action.get_size() == 1) player->looking(world_exits, world_items, *Box);
 		else
 		{
 			if (divided_action.compare(directions)) player->looking_exits(divided_action, world_exits);
-			else player->looking_items(divided_action, world_items);
+			else player->looking_items(divided_action, world_items, *Box);
 		}		
 	}
 
@@ -180,7 +182,7 @@ void World::action(const dynamic_array<char*>& divided_action)
 	//PICK
 	if (divided_action.compare(comands, 6))
 	{
-		player->pick(divided_action, world_items);
+		player->pick(divided_action, world_items, *Box);
 	}
 	
 	//DROP
@@ -207,11 +209,22 @@ void World::action(const dynamic_array<char*>& divided_action)
 		player->unequip(divided_action);
 	}
 
+	//PUT INTO
+	if (divided_action.compare(comands, 13) && divided_action.compare(comands, 14))
+	{
+		player->put(divided_action, *Box);
+	}
+
+	//GET
+	if (divided_action.compare(comands, 15) && divided_action.compare(comands, 16))
+	{
+		player->get(divided_action, *Box);
+	}
 }
 
 
 //This prints the room name and the description of where you are, and it's exits directions
-void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item*>& items) const
+void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item*>& items, const box& Box) const
 {
 	bool no_items = true;
 	printf("%s\n", player_room->name);
@@ -234,8 +247,9 @@ void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item
 			no_items = false;
 		}
 	}
+	if (Box.item_room == player_room) printf("%s\n", Box.name);
+	else if (no_items) printf("none");
 
-	if (no_items) printf("none");
 	printf("\n");
 
 }
@@ -256,7 +270,7 @@ void Player::looking_exits(const dynamic_array<char*>& divided_action, const dyn
 }
 
 //This will give the description of the item asked
-void Player::looking_items(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items)const
+void Player::looking_items(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items, const box& Box)const
 {
 	for (int i = 0; i < items.get_size(); i++)
 	{
@@ -264,6 +278,21 @@ void Player::looking_items(const dynamic_array<char*>& divided_action, const dyn
 		{
 			printf("%s,", items[i]->description);
 		}
+	}
+
+	if (Box.name == divided_action[1] && Box.item_room == player_room)
+	{
+		int stored = 0;
+
+		printf("%s\n", Box.description);
+		printf("Stored in box: \n");
+		
+		for (stored; stored < Box.storage.get_size(); stored++)
+		{
+				printf("\t*%s\n", Box.storage[stored]->name.c_str());
+
+		}
+		for (int i = 5; i > stored; i--) printf("\t*Empty\n");
 	}
 }
 
@@ -360,7 +389,7 @@ void Player::close_door(const dynamic_array<char*>& divided_action, const dynami
 		}
 	}
 
-void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items)
+void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items, const box& Box)
 {
 
 	if (inventory.get_size() == 3)
@@ -378,7 +407,8 @@ void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_arra
 		}
 	}
 
-	
+	if (Box.name == divided_action[1] && Box.item_room == player_room) printf("The Box is to heavy to get carryied\n");
+
 }
 
 void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array<item*>& items)
@@ -392,10 +422,7 @@ void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array
 			{
 				if (items.vector[i] == inventory[j] && items.vector[i]->name == divided_action.vector[1])
 				{
-					for (int k = j; k < inventory.get_size(); k++)
-					{
-						inventory[k] = inventory[k + 1];
-					}
+					inventory.move_element(i);
 					items[i]->dropped = true;
 					items[i]->item_room = player_room;
 					inventory.pop_back(poped);
@@ -483,10 +510,7 @@ void Player::unequip(const dynamic_array<char*>& divided_action)
 			{
 				inventory.push_back(equiped[i]);
 
-				for (int k = i; i < inventory.get_size(); i++)
-				{
-					equiped[i] = equiped[i + 1];
-				}
+				equiped.move_element(i);
 
 				equiped.pop_back(poped);
 				printf("Item Unequiped\n");
@@ -497,4 +521,47 @@ void Player::unequip(const dynamic_array<char*>& divided_action)
 			printf("This item is not equiped\n");
 		}
 	}
+}
+
+void Player::put(const dynamic_array<char*>& divided_action, box& Box)
+{
+
+	item* poped_item;
+
+	if (Box.storage.get_size() < 5)
+	{
+		for (int i = 0; i < inventory.get_size(); i++)
+		{
+			if (inventory[i]->name == divided_action[1])
+			{
+				Box.storage.push_back(inventory[i]);
+				inventory.move_element(i);
+				inventory.pop_back(poped_item);
+				printf("Item stored\n");
+			}
+		}
+
+	}
+
+	else printf("The box is full\n");
+}
+
+void Player::get(const dynamic_array<char*>& divided_action, box& Box)
+{
+	item* poped;
+
+	if (inventory.get_size() < 3)
+	{
+		for (int i = 0; i < Box.storage.get_size(); i++)
+		{
+			if (Box.storage[i]->name == divided_action[1])
+			{
+				inventory.push_back(Box.storage[i]);
+				Box.storage.move_element(i);
+				Box.storage.pop_back(poped);
+				printf("%s is now on your inventory\n", Box.storage[i]->name.c_str());
+			}
+		}
+	}
+	else printf("Your inventory is full\n");
 }

@@ -5,12 +5,14 @@
 #include "Rooms.h"
 #include "Player.h"
 #include "dinamic_array.h"
+#include "Box.h"
 
 class entity;
 
 class World
 {
 public:
+	box* Box;
 	Player* player;
 	dynamic_array <Rooms*> world_rooms;
 	dynamic_array <Exit*> world_exits;
