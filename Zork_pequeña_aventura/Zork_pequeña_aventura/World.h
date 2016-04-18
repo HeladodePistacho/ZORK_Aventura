@@ -28,8 +28,30 @@ public:
 	}
 	~World()
 	{
-		delete player;	
+		delete player;
+		delete Box;
+		for (int i = world_items.get_size() - 1; i > 0; i--)
+		{
+			delete world_items[i];
+		}
+		world_items.clean();
+
+		for (int i = world_rooms.get_size() - 1; i > 0; i--)
+		{
+			delete world_rooms[i];
+		}
+
+		world_rooms.clean();
+
+		for (int i = world_exits.get_size() - 1; i > 0; i--)
+		{
+			delete world_exits[i];
+		}
+		world_exits.clean();
 	}
+
+
+
 	void CreateWorld();
 	bool finish_game(const dynamic_array<char*>&);
 	void action(const dynamic_array<char*>&);

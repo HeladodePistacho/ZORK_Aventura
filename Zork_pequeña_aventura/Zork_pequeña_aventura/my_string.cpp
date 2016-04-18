@@ -194,5 +194,4 @@ void my_string::tokenize(const char* break_buffer, dynamic_array<char*>& phrase)
 	{
 		phrase.push_back(phrase_member);
 	}
-
 }

@@ -42,10 +42,7 @@ public:
 		vector = new TYPE[capacity];
 	}
 
-	~dynamic_array()
-	{
-		delete[]vector;
-	}
+	~dynamic_array(){ delete[]vector; }
 
 	void push_back(const TYPE& new_element)
 	{

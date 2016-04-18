@@ -344,7 +344,7 @@ void Player::get(const dynamic_array<char*>& divided_action, box& Box)
 
 void Player::combine(const dynamic_array<item*>& items)
 {
-	item* poped;
+	item* poped = nullptr;
 
 	if (equiped.get_size() == 2)
 	{
@@ -371,6 +371,11 @@ void Player::combine(const dynamic_array<item*>& items)
 		}
 	}
 	else printf("You will need one more item to combine\n");
+
+	if (poped == nullptr)
+	{
+		printf("You cant' combine this items\n");
+	}
 
 }
 
