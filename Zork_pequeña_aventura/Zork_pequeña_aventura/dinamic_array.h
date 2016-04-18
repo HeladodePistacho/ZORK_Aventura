@@ -42,6 +42,11 @@ public:
 		vector = new TYPE[capacity];
 	}
 
+	~dynamic_array()
+	{
+		delete[]vector;
+	}
+
 	void push_back(const TYPE& new_element)
 	{
 		if (num_elements == capacity)
@@ -170,7 +175,7 @@ public:
 
 	void move_element(int position)
 	{
-		for (int i = position; i < num_elements; i++)
+		for (unsigned int i = position; i < num_elements; i++)
 		{
 			vector[i] = vector[i + 1];
 		}

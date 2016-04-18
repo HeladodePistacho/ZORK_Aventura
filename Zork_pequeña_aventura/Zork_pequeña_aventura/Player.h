@@ -1,5 +1,5 @@
-#ifndef PLAYER
-#define PLAYER
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
 
 #include "Rooms.h"
 #include "Items.h"
