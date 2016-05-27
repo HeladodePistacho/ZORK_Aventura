@@ -71,11 +71,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Creature.h" />
     <ClInclude Include="dinamic_array.h" />
     <ClInclude Include="Exits.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="entity.h" />
-    <ClInclude Include="MemLeaks.h" />
+    <ClInclude Include="Lista_enlazada.h" />
     <ClInclude Include="my_string.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rooms.h" />

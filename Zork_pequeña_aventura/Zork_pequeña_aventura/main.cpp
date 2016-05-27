@@ -4,7 +4,6 @@
 #include "Player.h"
 #include "Rooms.h"
 #include "Items.h"
-#include "MemLeaks.h"
 #include <stdio.h>
 #include "my_string.h"
 #include <stdlib.h>
@@ -13,7 +12,6 @@
 
 int main()
 {
-	ReportMemoryLeaks();
 	dynamic_array<char*> divided_action;
 	my_string main_action;
 	World map;

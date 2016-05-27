@@ -56,7 +56,10 @@
     <ClInclude Include="Box.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="MemLeaks.h">
+    <ClInclude Include="Creature.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Lista_enlazada.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

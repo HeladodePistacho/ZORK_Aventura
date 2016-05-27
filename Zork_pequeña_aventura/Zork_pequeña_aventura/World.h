@@ -12,11 +12,11 @@ class entity;
 class World
 {
 public:
-	box* Box;
+
+	 
+	dynamic_array <entity*> entities;
 	Player* player;
-	dynamic_array <Rooms*> world_rooms;
-	dynamic_array <Exit*> world_exits;
-	dynamic_array <item*> world_items;
+
 	dynamic_array <char*> comands;
 	dynamic_array <char*> directions;
 

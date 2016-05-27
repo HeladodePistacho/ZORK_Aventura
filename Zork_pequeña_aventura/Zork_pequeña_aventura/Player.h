@@ -14,7 +14,7 @@ public:
 	dynamic_array<item*> equiped;
 public:
 
-	Player(const char* nam, const char* des, Rooms* initial_room, unsigned int equip, unsigned int inv) : creature(nam, des, initial_room), equiped(equip), inventory(inv)
+	Player(const char* nam, const char* des, entity* initial_room, unsigned int equip) : creature(nam, des, initial_room), equiped(equip)
 	{
 		entity_type = PLAYER;
 	}
