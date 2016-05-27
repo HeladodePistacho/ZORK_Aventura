@@ -21,10 +21,11 @@ public:
 
 		craftable_item1 = craft_item;
 		craftable_item2 = craft_item2;
-		type = ITEM;
+		entity_type = ITEM;
 		picked = false;
 	}
 
+	
 
 
 };

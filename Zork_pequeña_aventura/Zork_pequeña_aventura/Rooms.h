@@ -12,7 +12,7 @@ public:
 
 	Rooms(const char* nam, const char* des) : entity(nam, des) 
 	{
-		type = ROOM;
+		entity_type = ROOM;
 	}
 	
 

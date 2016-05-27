@@ -16,7 +16,7 @@ public:
 
 	box(const char* nam, const char* des, Rooms* room) : entity(nam, des) , item_room(room)
 	{
-		type = ITEM;
+		entity_type = ITEM;
 	}
 	
 
