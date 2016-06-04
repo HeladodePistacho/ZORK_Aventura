@@ -8,24 +8,61 @@ class Rooms;
 class item : public entity
 {
 public:
-	entity* craftable_item1;
-	entity* craftable_item2;
-	entity* item_room;
-	bool dropped;
+	
 	bool picked;
+	bool dropped;
+	bool fillable;
 
 public:
 
-	item(const char* nam, const char* des, bool drop, entity* room, entity* craft_item, entity* craft_item2, TYPE type) : entity(nam, des), dropped(drop), item_room(room)
+	item(const char* nam, const char* des, bool drop, bool fill, entity* craft_item, entity* craft_item2) : entity(nam, des), dropped(drop), fillable(fill)
 	{
-
-		craftable_item1 = craft_item;
-		craftable_item2 = craft_item2;
-		entity_type = type;
+		entity_type = ITEM;
 		picked = false;
+
+		if (craft_item != nullptr)
+			list.PushBack(craft_item);
+
+		if (craft_item2 != nullptr)
+			list.PushBack(craft_item2);
+
 	}
 
-	
+	bool Look_extra_info(INFO_TYPE item_info) const
+	{
+		if (item_info == ITEM_DROP)
+			return dropped;
+
+		if (item_info == ITEM_FILL)
+			return fillable;
+
+		if (item_info == ITEM_PICK)
+			return picked;
+	}
+
+	void Change_extra_info(INFO_TYPE item_info)
+	{
+		if (item_info == ITEM_DROP)
+		{
+			if (dropped)
+				dropped = false;
+			else dropped = true;
+		}
+
+		if (item_info == ITEM_FILL)
+		{
+			if (fillable)
+				fillable = false;
+			else fillable = true;
+		}
+
+		if (item_info == ITEM_PICK)
+		{
+			if (picked)
+				picked = false;
+			else picked = true;
+		}
+	}
 
 
 };

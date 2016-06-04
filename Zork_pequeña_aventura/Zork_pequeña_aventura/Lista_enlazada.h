@@ -68,6 +68,7 @@ public:
 		{
 			node* last_node = end();
 			last_node->next = added_node;
+			added_node->next = nullptr;
 		}
 
 	}
@@ -102,32 +103,6 @@ public:
 			}
 		}
 
-	}
-
-	node* PopBack()
-	{
-		if (first_node != nullptr)
-		{
-			if (first_node->next != nullptr)
-			{
-				node*  final_element = first_node;
-				node*  penultim_node = first_node;
-
-				while (final_element->next != nullptr) final_element = final_element->next;
-				while (penultim_node->next != final_element) penultim_node = penultim_node->next;
-
-				penultim_node->next = nullptr;
-				return final_element;
-				delete final_element;
-
-			}
-			else
-			{
-				return first_node;
-				delete first_node;
-				first_node = nullptr;
-			}
-		}
 	}
 
 	void PopFront()
@@ -179,39 +154,22 @@ public:
 
 	}
 
-	node* Erase(node* erased_node)
-	{
-		if (erased_node != nullptr)
-		{
-			node<TYPE>* pre_erased_node = first_node;
-
-			if (erased_node == first_node)
-			{
-				return first_node;
-				delete first_node;
-				first_node = nullptr;
-			}
-			else
-			{
-				while (pre_erased_node->next != erased_node) pre_erased_node = pre_erased_node->next;
-				pre_erased_node->next = erased_node->next;
-				return erased_node;
-				delete erased_node;
-			}
-
-		}
-	}
-
 	void Erase(node* erased_node)
 	{
 		if (erased_node != nullptr)
 		{
-			node<TYPE>* pre_erased_node = first_node;
+			node* pre_erased_node = first_node;
 
 			if (erased_node == first_node)
 			{
-				delete first_node;
-				first_node = nullptr;
+				if (first_node->next != nullptr)
+				{
+					first_node = first_node->next;
+				}
+				else first_node = nullptr;
+
+				delete pre_erased_node;
+				
 			}
 			else
 			{

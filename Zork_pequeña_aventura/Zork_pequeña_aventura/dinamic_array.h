@@ -127,7 +127,6 @@ public:
 
 	bool pop_back(TYPE& value)
 	{
-
 		if (num_elements > 0)
 		{
 			num_elements--;
@@ -137,36 +136,44 @@ public:
 		return false;
 	}
 	
-
 	bool compare(const dynamic_array& str, unsigned int position) const
 	{
-		for (unsigned int i = 0; i < num_elements; i++)
+		if (vector[0] != nullptr)
 		{
-			if (strcmp(vector[i], str.vector[position]) == 0) return true;
+			for (unsigned int i = 0; i < num_elements; i++)
+			{
+				if (strcmp(vector[i], str.vector[position]) == 0) return true;
+			}
+			return false;
 		}
-		return false;
 	}
 	
 	bool compare(const dynamic_array<TYPE>& str) const
 	{
-		for (unsigned int i = 0; i < num_elements; i++)
+		if (vector[0] != nullptr)
 		{
-			for (unsigned int j = 0; j < str.num_elements; j++)
+			for (unsigned int i = 0; i < num_elements; i++)
 			{
-				if (strcmp(vector[i], str.vector[j]) == 0) return true;
+				for (unsigned int j = 0; j < str.num_elements; j++)
+				{
+					if (strcmp(vector[i], str.vector[j]) == 0) return true;
+				}
 			}
+
+			return false;
 		}
-		
-		return false;
 	}
 
 	bool compare(const char* str) const
 	{
-		for (unsigned int i = 1; i < num_elements; i++)
+		if (vector[0] != nullptr)
 		{
-			if (strcmp(vector[i], str) == 0) return true;
+			for (unsigned int i = 1; i < num_elements; i++)
+			{
+				if (strcmp(vector[i], str) == 0) return true;
+			}
+			return false;
 		}
-		return false;
 	}
 
 

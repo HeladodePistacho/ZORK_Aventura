@@ -41,7 +41,7 @@ unsigned int my_string::lenght() const
 
 const char* my_string::c_str()const
 {
-	return buffer;
+ 	return buffer;
 }
 
 bool my_string::empty()const

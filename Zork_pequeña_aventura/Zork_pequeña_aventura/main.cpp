@@ -1,5 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "World.h"
+#include <Windows.h>
+#include <conio.h>
 #include "Exits.h"
 #include "Player.h"
 #include "Rooms.h"
@@ -8,6 +10,7 @@
 #include "my_string.h"
 #include <stdlib.h>
 
+#define ACTION_LONG 50
 
 
 int main()
@@ -15,20 +18,40 @@ int main()
 	dynamic_array<char*> divided_action;
 	my_string main_action;
 	World map;
-	char action[50];
-	bool finish;
+	char action[ACTION_LONG];
+	bool finish = false;
+
+	unsigned int actual_character = 0;
 
 
 	do
 	{
-		printf("What's your next action?\n");
-		gets(action);
-		main_action.tokenize(" ", action, divided_action);
+		if (_kbhit())
+		{
+			if (actual_character < (ACTION_LONG - 2))
+			{
+				action[actual_character] = _getch();
+				action[actual_character + 1] = '\0';
+				
+				actual_character++;
+			}
 
-		map.action(divided_action);
-		finish = map.finish_game(divided_action);
-		divided_action.clean();
-		printf("\n\n");
+			if (action[actual_character - 1] == '\r')
+			{
+				action[actual_character] = '\0';
+				printf("%s", action);//va imprimint l'estat de command
+				actual_character = 0;
+				main_action.tokenize(" \r", action, divided_action);
+				map.action(divided_action);
+				finish = map.finish_game(divided_action);
+				divided_action.clean();
+				printf("\n\n");
+			}
+		
+
+		}
+		
+		
 
 	} while (finish == false);
 

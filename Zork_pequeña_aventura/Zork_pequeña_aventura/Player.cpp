@@ -2,45 +2,54 @@
 #include "Player.h"
 
 //This prints the room name and the description of where you are, and it's exits directions
-void Player::looking(const dynamic_array<Exit*>& exits, const dynamic_array<item*>& items, const box& Box) const
+void Player::looking(const dynamic_array<entity*>& entities) const
 {
 	bool no_items = true;
-	printf("%s\n", player_room->name);
-	printf("%s\n", player_room->description);
+	printf("%s\n", creature_room->name);
+	printf("%s\n", creature_room->description);
 	printf("There is an exit going:");
-	for (unsigned int j = 0; j < exits.get_size(); j++)
+	for (unsigned int j = 0; j < entities.get_size(); j++)
 	{
-		if (exits[j]->origen == player_room)
+		if (entities[j]->entity_type == EXIT && entities[j]->list.first_node->data == creature_room)
 		{
-			printf(" %s,", exits[j]->name);
-		}
+			printf(" %s,", entities[j]->name);
+		}	
 	}
 
 	printf("\nItems in the room: ");
-	for (unsigned int i = 0; i < items.get_size(); i++)
+	for (unsigned int i = 0; i < entities.get_size(); i++)
 	{
-		if (items[i]->item_room == player_room && items[i]->dropped == true)
+		
+		if (entities[i] == creature_room)
 		{
-			printf(" %s,", items[i]->name);
-			no_items = false;
+
+			entity temp = *entities[i];
+
+			while (temp.list.first_node != nullptr)
+			{
+				printf(" %s,", temp.list.first_node->data->name.c_str());
+				no_items = false;
+				temp.list.first_node = temp.list.first_node->next;
+			}
 		}
 	}
-	if (Box.item_room == player_room) printf("%s\n", Box.name);
-	else if (no_items) printf("none");
+
+	if (no_items) printf("none");
 
 	printf("\n");
 
 }
 
 //This will give the description of the exit asked
-void Player::looking_exits(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)const{
+void Player::looking_exits(const dynamic_array<char*>& divided_action, const dynamic_array<entity*>& entities)const
+{
 	bool no_exit = true;
 
-	for (unsigned int j = 0; j < exits.get_size(); j++){
+	for (unsigned int j = 0; j < entities.get_size(); j++){
 
-		if (divided_action.compare(exits[j]->name.c_str()) && exits[j]->origen == player_room)
+		if (divided_action.compare(entities[j]->name.c_str()) && entities[j]->entity_type == EXIT && entities[j]->list.first_node->data == creature_room)
 		{
-			printf("%s\n", exits[j]->description);
+			printf("%s\n", entities[j]->description);
 			no_exit = false;
 		}
 	}
@@ -48,58 +57,70 @@ void Player::looking_exits(const dynamic_array<char*>& divided_action, const dyn
 }
 
 //This will give the description of the item asked
-void Player::looking_items(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items, const box& Box)const
+void Player::looking_items(const dynamic_array<char*>& divided_action, const dynamic_array<entity*>& entities)const
 {
-	for (unsigned int i = 0; i < items.get_size(); i++)
+	//LOOKS ITEMS INTO ROOM
+	int stored = 0;
+	entity temp = *creature_room;
+	while (temp.list.first_node != nullptr)
 	{
-		if (items[i]->name == divided_action[1] && (items[i]->item_room == player_room || items[i]->picked == true))
+		if (temp.list.first_node->data->name == divided_action[1])
 		{
-			printf("%s,", items[i]->description);
+			printf("%s\n", temp.list.first_node->data->description);
+
+			if (temp.list.first_node->data->Look_extra_info(ITEM_FILL))
+			{
+				entity temp_box = *temp.list.first_node->data;
+				printf("Stored in box: \n");
+
+				while (temp_box.list.first_node != nullptr)
+				{
+
+					printf("\t%s\n", temp_box.list.first_node->data->name.c_str());
+					temp_box.list.first_node = temp_box.list.first_node->next;
+					stored++;
+
+				}
+				for (int k = stored; k <= 2; k++) printf("\t*Empty\n");
+			}	
 		}
+		temp.list.first_node = temp.list.first_node->next;
 	}
 
-	if (Box.name == divided_action[1] && Box.item_room == player_room)
+	//LOOKS ITEMS INTO INVENTORY
+	for (int i = 0; i < inventory.get_size(); i++)
 	{
-		unsigned int stored = 0;
-
-		printf("%s\n", Box.description);
-		printf("Stored in box: \n");
-
-		for (stored; stored < Box.storage.get_size(); stored++)
+		if (inventory[i] != nullptr)
 		{
-			printf("\t*%s\n", Box.storage[stored]->name.c_str());
-
+			if (inventory[i]->name == divided_action[1])
+				printf("%s", inventory[i]->description);
 		}
-		for (int i = 5; i > stored; i--) printf("\t*Empty\n");
 	}
+		
 }
 
-
-
-void Player::movement(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits, unsigned int position)
+void Player::movement(const dynamic_array<char*>& divided_action, const dynamic_array<entity*>& entities, unsigned int position)
 {
 	bool door_closed = true;
 	bool recheable_room = false;
 
-	for (unsigned int j = 0; j < exits.get_size(); j++){
+	for (unsigned int j = 0; j < entities.get_size(); j++){
 
-		if (exits[j]->open == true && exits[j]->origen == player_room && exits[j]->name == divided_action[position])
+		if (entities[j]->entity_type == EXIT && entities[j]->Look_extra_info(EXIT_SATE) == true && entities[j]->list.first_node->data == creature_room && entities[j]->name == divided_action[position])
 		{
-			player_room = exits[j]->destiny;
-			printf("%s\n", player_room->name);
+			creature_room = entities[j]->list.first_node->next->data;
+			printf("%s\n", creature_room->name);
 			recheable_room = true;
 			break;
 		}
 		else {
-			if (exits[j]->open == false && exits[j]->origen == player_room)
+			if (entities[j]->Look_extra_info(EXIT_SATE) == false && entities[j]->entity_type == EXIT && entities[j]->list.first_node->data == creature_room)
 			{
 				door_closed = false;
 			}
 		}
 	}
 	if (door_closed == false) printf("You can't go this way, the path is closed\n");
-
-
 	else if (recheable_room == false)
 	{
 		printf("You can't go this way\n");
@@ -107,28 +128,26 @@ void Player::movement(const dynamic_array<char*>& divided_action, const dynamic_
 
 }
 
-
 //This function lets the player open and close paths changing the boolen open from the exits
-void Player::open_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)const
+void Player::open_door(const dynamic_array<char*>& divided_action, const dynamic_array<entity*>& entities)const
 {
 	int counter_open = 0;
-	for (unsigned int j = 0; j < exits.get_size(); j++)
+	for (unsigned int j = 0; j < entities.get_size(); j++)
 	{
 
-		if (exits[j]->origen == player_room && exits[j]->name == divided_action.vector[1])
+		if (entities[j]->entity_type == EXIT && entities[j]->name == divided_action.vector[1] && entities[j]->list.first_node->data == creature_room)
 		{
-			if (exits[j]->open == true)
+			if (entities[j]->Look_extra_info(EXIT_SATE))
 			{
 				printf("This path is already open\n");
 			}
 			else
 			{
-				exits[j]->open = true;
+				entities[j]->Change_extra_info(EXIT_SATE);
 				printf("The path is open\n");
 			}
 			counter_open++;
 		}
-
 	}
 	if (counter_open == 0)
 	{
@@ -136,21 +155,21 @@ void Player::open_door(const dynamic_array<char*>& divided_action, const dynamic
 	}
 }
 
-void Player::close_door(const dynamic_array<char*>& divided_action, const dynamic_array<Exit*>& exits)const
+void Player::close_door(const dynamic_array<char*>& divided_action, const dynamic_array<entity*>& entities)const
 {
 	int counter_close = 0;
-	for (unsigned int j = 0; j < exits.get_size(); j++)
+	for (unsigned int j = 0; j < entities.get_size(); j++)
 	{
 
-		if (exits[j]->origen == player_room && exits[j]->name == divided_action.vector[1])
+		if (entities[j]->name == divided_action.vector[1] && entities[j]->entity_type == EXIT && entities[j]->list.first_node->data == creature_room)
 		{
-			if (exits[j]->open == false)
+			if (entities[j]->Look_extra_info(EXIT_SATE) == false)
 			{
 				printf("This path is already closed\n");
 			}
 			else
 			{
-				exits[j]->open = false;
+				entities[j]->Change_extra_info(EXIT_SATE);
 				printf("The path is closed\n");
 			}
 			counter_close++;
@@ -163,7 +182,7 @@ void Player::close_door(const dynamic_array<char*>& divided_action, const dynami
 	}
 }
 
-void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_array<item*>& items, const box& Box)
+void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_array<entity*>& entities)
 {
 
 	if (inventory.get_size() == 3)
@@ -171,42 +190,43 @@ void Player::pick(const dynamic_array<char*>& divided_action, const dynamic_arra
 		printf("Your inventory is full");
 	}
 
-	for (unsigned int i = 0; i < items.get_size(); i++)
+	else
 	{
-		if (items[i]->item_room == player_room && inventory.get_size() < 3 && items[i]->dropped == true && items[i]->name == divided_action.vector[1])
-		{
-			items[i]->dropped = false;
-			items[i]->picked = true;
-			inventory.push_back(items[i]);
-			printf("You putted it into your inventory\n");
-		}
-	}
+		entity temp = *creature_room;
 
-	if (Box.name == divided_action[1] && Box.item_room == player_room) printf("The Box is to heavy to get carryied\n");
+		while (temp.list.first_node != nullptr)
+		{
+			if (temp.list.first_node->data->name == divided_action.vector[1])
+			{
+				
+				inventory.push_back(temp.list.first_node->data);
+				creature_room->list.Erase(temp.list.first_node);
+				printf("You putted it into your inventory\n");
+				break;
+			}
+			temp.list.first_node = temp.list.first_node->next;
+		}
+
+	}
 
 }
 
-void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array<item*>& items)
+void Player::drop(const dynamic_array<char*>&divided_action, const dynamic_array<entity*>& entities)
 {
+	entity* poped = nullptr;
 
-	item* poped = nullptr;
-
-	for (unsigned int i = 0; i < items.get_size(); i++)
+	for (unsigned int j = 0; j < inventory.get_size(); j++)
 	{
-		for (unsigned int j = 0; j < inventory.get_size(); j++)
+		if (inventory[j]->name == divided_action.vector[1])
 		{
-			if (items.vector[i] == inventory[j] && items.vector[i]->name == divided_action.vector[1])
-			{
-				inventory.move_element(i);
-				items[i]->dropped = true;
-				items[i]->picked = false;
-				items[i]->item_room = player_room;
-				inventory.pop_back(poped);
-				printf("item dropped in the room: %s", player_room->name);
-			}
+			inventory[j]->Change_extra_info(ITEM_DROP);
+			creature_room->list.PushBack(inventory[j]);
+			inventory.move_element(j);
+			inventory.pop_back(poped);
+			printf("item dropped in the room: %s", creature_room->name);
 		}
-
 	}
+
 
 	if (poped == nullptr)
 	{
@@ -246,15 +266,13 @@ void Player::Get_inventory()const
 
 void Player::equip(const dynamic_array<char*>& divided_action)
 {
-	item* poped = nullptr;
+	entity* poped = nullptr;
 
 	for (unsigned int i = 0; i < inventory.get_size(); i++)
 	{
 		if (inventory.vector[i]->name == divided_action.vector[1])
 		{
-
 			equiped.push_back(inventory[i]);
-
 			for (unsigned int k = i; k < inventory.get_size(); k++)
 			{
 				inventory[k] = inventory[k + 1];
@@ -273,7 +291,7 @@ void Player::equip(const dynamic_array<char*>& divided_action)
 
 void Player::unequip(const dynamic_array<char*>& divided_action)
 {
-	item* poped = nullptr;
+	entity* poped = nullptr;
 
 	if (inventory.get_size() == 3)
 	{
@@ -299,73 +317,119 @@ void Player::unequip(const dynamic_array<char*>& divided_action)
 	}
 }
 
-void Player::put(const dynamic_array<char*>& divided_action, box& Box)
+void Player::put(const dynamic_array<char*>& divided_action, const dynamic_array<entity*>& entities)
 {
+	entity* poped_item;
+	bool full_box = false;
+	my_list<entity*> temp = creature_room->list;
 
-	item* poped_item;
-
-	if (Box.storage.get_size() < 5)
+	while (creature_room->list.first_node != nullptr)
 	{
-		for (unsigned int i = 0; i < inventory.get_size(); i++)
+		if (creature_room->list.first_node->data->Look_extra_info(ITEM_FILL))
 		{
-			if (inventory[i]->name == divided_action[1])
+			if (creature_room->list.first_node->data->list.size() > 2)
 			{
-				Box.storage.push_back(inventory[i]);
-				inventory.move_element(i);
-				inventory.pop_back(poped_item);
-				printf("Item stored\n");
+				full_box = true;
+				break;
 			}
+			else
+			{	
+				for (int i = 0; i < inventory.get_size(); i++)
+				{
+					if (inventory[i]->name == divided_action[1])
+					{
+						creature_room->list.first_node->data->list.PushBack(inventory[i]);
+						inventory.move_element(i);
+						inventory.pop_back(poped_item);
+						printf("Item stored\n");
+					}
+				}
+			}
+
 		}
 
+		creature_room->list.first_node = creature_room->list.first_node->next;
 	}
 
-	else printf("The box is full\n");
+	creature_room->list.first_node = temp.first_node;
+	if (full_box) printf("The box is full\n");
 }
 
-void Player::get(const dynamic_array<char*>& divided_action, box& Box)
+void Player::get(const dynamic_array<char*>& divided_action, const dynamic_array<entity*>& entities)
 {
-	item* poped;
+	entity* poped;
+	bool empty_box = true;
+	bool is_here_box = false;
 
-	if (inventory.get_size() < 3)
+	my_list<entity*> temp = creature_room->list;
+
+	if (inventory.get_size() > 2)
 	{
-		for (unsigned int i = 0; i < Box.storage.get_size(); i++)
+
+		while (creature_room->list.first_node != nullptr)
 		{
-			if (Box.storage[i]->name == divided_action[1])
+			if (creature_room->list.first_node->data->Look_extra_info(ITEM_FILL))
 			{
-				inventory.push_back(Box.storage[i]);
-				printf("%s is now on your inventory\n", Box.storage[i]->name.c_str());
-				Box.storage.move_element(i);
-				Box.storage.pop_back(poped);
+				entity* box_temp = creature_room->list.first_node->data;
+
+				while (creature_room->list.first_node->data->list.first_node != nullptr)
+				{
+					if (creature_room->list.first_node->data->list.first_node->data->name == divided_action[1])
+					{
+						inventory.push_back(creature_room->list.first_node->data->list.first_node->data);
+						printf("%s is now on your inventory\n", creature_room->list.first_node->data->list.first_node->data->name.c_str());
+						creature_room->list.first_node->data->list.Erase(creature_room->list.first_node->data->list.first_node);
+						empty_box = false;
+						break;
+					}
+					creature_room->list.first_node->data->list.first_node = creature_room->list.first_node->data->list.first_node->next;
+				}
+				creature_room->list.first_node->data->list = box_temp->list;
+				is_here_box = true;
 			}
+			creature_room->list.first_node = creature_room->list.first_node->next;
 		}
+
+		creature_room->list.first_node = temp.first_node;
+		
+
 	}
-	else printf("Your inventory is full\n");
+	else
+	{
+		if (empty_box)
+			printf("The box is empty\n");
+
+		else if (is_here_box)
+			printf("The box is not in your room\n");
+
+		else printf("Your inventory is full\n");
+	}	
 }
 
-void Player::combine(const dynamic_array<item*>& items)
+void Player::combine(const dynamic_array<entity*>& entities)
 {
-	item* poped = nullptr;
+	entity* poped = nullptr;
 
 	if (equiped.get_size() == 2)
 	{
 
-		if (equiped.vector[0]->craftable_item1 == equiped.vector[1]->craftable_item1 || equiped.vector[0]->craftable_item1 == equiped.vector[1]->craftable_item2)
+		if (equiped.vector[0]->list.first_node->data == equiped.vector[1]->list.first_node->data || equiped.vector[0]->list.first_node == equiped.vector[1]->list.first_node->next)
 		{
-			printf("You created the %s\n", equiped.vector[0]->craftable_item1->name.c_str());
+			printf("You created the %s\n", equiped.vector[0]->list.first_node->data->name.c_str());
 			equiped.pop_back(poped);
-			equiped.push_front(equiped.vector[0]->craftable_item1);
+			equiped.push_front(equiped.vector[0]->list.first_node->data);
 			equiped.pop_back(poped);
-			equiped.vector[0]->picked = true;
+			equiped.vector[0]->Change_extra_info(ITEM_PICK);
 		}
 
 		else {
-			if (equiped.vector[0]->craftable_item2 == equiped.vector[1]->craftable_item1 || equiped.vector[0]->craftable_item2 == equiped.vector[1]->craftable_item2)
+			if (equiped.vector[0]->list.first_node->next == equiped.vector[1]->list.first_node || equiped.vector[0]->list.first_node->next == equiped.vector[1]->list.first_node->next)
 			{
-				printf("You created the %s\n", equiped.vector[0]->craftable_item2->name.c_str());
+				printf("You created the %s\n", equiped.vector[0]->list.first_node->next->next->data->name.c_str());
 				equiped.pop_back(poped);
-				equiped.push_front(equiped.vector[0]->craftable_item1);
+				equiped.push_front(equiped.vector[0]->list.first_node->data);
 				equiped.pop_back(poped);
-				equiped.vector[0]->picked = true;
+				equiped.vector[0]->Change_extra_info(ITEM_PICK);
 			}
 
 		}
