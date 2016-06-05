@@ -413,7 +413,7 @@ void Player::combine(const dynamic_array<entity*>& entities)
 	if (equiped.get_size() == 2)
 	{
 
-		if (equiped.vector[0]->list.first_node->data == equiped.vector[1]->list.first_node->data || equiped.vector[0]->list.first_node == equiped.vector[1]->list.first_node->next)
+		if (equiped.vector[0]->list.first_node->data == equiped.vector[1]->list.first_node->data || equiped.vector[0]->list.first_node->data == equiped.vector[1]->list.first_node->next->data)
 		{
 			printf("You created the %s\n", equiped.vector[0]->list.first_node->data->name.c_str());
 			equiped.pop_back(poped);
@@ -423,7 +423,7 @@ void Player::combine(const dynamic_array<entity*>& entities)
 		}
 
 		else {
-			if (equiped.vector[0]->list.first_node->next == equiped.vector[1]->list.first_node || equiped.vector[0]->list.first_node->next == equiped.vector[1]->list.first_node->next)
+			if (equiped.vector[0]->list.first_node->next->data == equiped.vector[1]->list.first_node->data || equiped.vector[0]->list.first_node->next->data == equiped.vector[1]->list.first_node->next->data)
 			{
 				printf("You created the %s\n", equiped.vector[0]->list.first_node->next->next->data->name.c_str());
 				equiped.pop_back(poped);
