@@ -4,7 +4,7 @@
 #include "my_string.h"
 #include "Lista_enlazada.h"
 
-enum TYPE { PLAYER, ROOM, EXIT, ITEM };
+enum TYPE { PLAYER, ROOM, EXIT, ITEM, CREATURE };
 enum INFO_TYPE { ITEM_DROP, ITEM_PICK, ITEM_FILL, EXIT_SATE };
 
 

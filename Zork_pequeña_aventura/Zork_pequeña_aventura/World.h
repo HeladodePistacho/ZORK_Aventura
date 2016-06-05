@@ -3,6 +3,7 @@
 
 #include "Exits.h"
 #include "Rooms.h"
+#include "Mouse.h"
 #include "Player.h"
 #include "dinamic_array.h"
 #include "Box.h"
@@ -16,6 +17,7 @@ public:
 	 
 	dynamic_array <entity*> entities;
 	Player* player;
+	Mouse* rat;
 
 	dynamic_array <char*> comands;
 	dynamic_array <char*> directions;

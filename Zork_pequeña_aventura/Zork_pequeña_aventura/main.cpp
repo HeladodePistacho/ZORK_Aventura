@@ -21,11 +21,17 @@ int main()
 	char action[ACTION_LONG];
 	bool finish = false;
 
+	
+	int actual_time = 0;
+	int action_time = 1000;
+
 	unsigned int actual_character = 0;
 
 
 	do
 	{
+		int current_time = GetTickCount();
+
 		if (_kbhit())
 		{
 			if (actual_character < (ACTION_LONG - 2))
@@ -51,6 +57,19 @@ int main()
 
 		}
 		
+		//update
+		if (current_time >= actual_time + action_time)
+		{
+			for (int i = 0; i < map.entities.get_size(); i++)
+			{
+				map.entities[i]->Update();
+			}
+			actual_time = current_time;
+		}
+		//test
+
+		
+
 		
 
 	} while (finish == false);

@@ -3,6 +3,7 @@
 #include "Exits.h"
 #include "Player.h"
 #include "Rooms.h"
+#include "Mouse.h"
 #include "Creature.h"
 #include "Items.h"
 #include <stdio.h>
@@ -105,6 +106,9 @@ void World::CreateWorld()
 
 	//PLAYER
 	player = new Player("", "", Desk, 2);
+
+
+	entities.push_back(new Mouse("Mouse", "", Desk, entities));
 
 	my_string dir("north south west east up down n s w e");
 	dir.tokenize(" ", directions);
