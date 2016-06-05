@@ -48,12 +48,12 @@ void World::CreateWorld()
 
 	//ROOMS
 	Rooms* CenterRoom = new Rooms("Center of the room", "A lightly place in the middle of the room, there's nothing interesting to do, but you can go everywhere from here", nullptr, nullptr, nullptr);
-	Rooms* Heater = new Rooms("In Front of the Heater", "A warm place under some book shelves, between the wardrobe and the desk", nullptr, nullptr, nullptr);
-	Rooms* UnderWardrobe = new Rooms("Under the wardrobe", "Your house, it is a wet but homely place", nullptr, nullptr, nullptr);
+	Rooms* Heater = new Rooms("In Front of the Heater", "A warm place under some book shelves, between the wardrobe and the desk", Matchstick, nullptr, nullptr);
+	Rooms* UnderWardrobe = new Rooms("Under the wardrobe", "Your house, it is a wet but homely place", BlueWire, nullptr, nullptr);
 	Rooms* FrontWardrobe = new Rooms("Front of the wardrobe", "A large and empty place in front of your home", nullptr, nullptr, nullptr);
 	Rooms* BehindDoor = new Rooms("Behind the Door", "A really dark place, you will need something to watch if there's something in front of you", Needle, nullptr, nullptr);
 	Rooms* BookShelves = new Rooms("Book Shelves", "A high place with some adventure books and comics, high enough to reach the wardrobe top", Box, nullptr, nullptr);
-	Rooms* Desk = new Rooms("Desk", "A lightly place next to the window with a half-eated sandwich, a laptop and some jambled stuff", BlackPlastic, BlueWire, Matchstick);
+	Rooms* Desk = new Rooms("Desk", "A lightly place next to the window with a half-eated sandwich, a laptop and some jambled stuff", BlackPlastic, nullptr, nullptr);
 	Rooms* UnderBed = new Rooms("Under the Bed", "This place is a mess, really dirty and full of dust, you can also see a tiny door", Shoelace, nullptr, nullptr);
 	Rooms* Bed = new Rooms("Bed", "Really soft and comfortable place, the bedside table seems reacheable from here", nullptr, nullptr, nullptr);
 	Rooms* MouseCave = new Rooms("Mouse cave", "A place which stinks of cheese, there is a mouse trap here but seems that the animal is smarter than the humans", MouseTrap, nullptr, nullptr);
