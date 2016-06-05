@@ -25,12 +25,18 @@ public:
 	}
 
 	void Move();
-	void pick(){};
-	void drop(){};
+	void pick();
+	void drop();
 
 	void Update()
 	{
+		if (inventory.get_size() == 0)
+			pick();
+
 		Move();
+
+		if (inventory.get_size() > 0)
+			drop();
 	}
 
 };

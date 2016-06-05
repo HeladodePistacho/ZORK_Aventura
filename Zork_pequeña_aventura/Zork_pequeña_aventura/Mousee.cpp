@@ -34,3 +34,23 @@ void Mouse::Move()
 	}
 }
 
+void Mouse::pick()
+{
+	entity temp = *creature_room;
+	if (temp.list.first_node != nullptr)
+	{
+		inventory.push_back(temp.list.first_node->data);
+		creature_room->list.Erase(temp.list.first_node);
+	}
+}
+
+void Mouse::drop()
+{
+	entity* poped = nullptr;
+
+	inventory[0]->Change_extra_info(ITEM_DROP);
+	creature_room->list.PushBack(inventory[0]);
+	inventory.pop_back(poped);
+
+}
+

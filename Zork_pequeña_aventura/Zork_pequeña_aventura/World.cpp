@@ -108,7 +108,7 @@ void World::CreateWorld()
 	player = new Player("", "", Desk, 2);
 
 
-	entities.push_back(new Mouse("Mouse", "", Desk, entities));
+	entities.push_back(new Mouse("Mouse", "", MouseCave, entities));
 
 	my_string dir("north south west east up down n s w e");
 	dir.tokenize(" ", directions);
