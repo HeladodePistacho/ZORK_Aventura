@@ -22,7 +22,9 @@ public:
 
 	dynamic_array()
 	{
-		vector = new TYPE[capacity];	
+		vector = new TYPE[capacity];
+
+		
 	}
 
 	dynamic_array(const dynamic_array& other_array)
@@ -40,6 +42,8 @@ public:
 	{
 		capacity = size;
 		vector = new TYPE[capacity];
+		for (int i = 0; i < capacity; i++)
+			vector[i] = nullptr;
 	}
 
 	~dynamic_array(){ delete[]vector; }

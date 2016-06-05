@@ -15,9 +15,11 @@ public:
 
 public:
 
-	item(const char* nam, const char* des, bool drop, bool fill, entity* craft_item, entity* craft_item2) : entity(nam, des), dropped(drop), fillable(fill)
+	item(const char* nam, const char* des, bool drop, bool fill, entity* craft_item, entity* craft_item2, int dmg) : entity(nam, des), dropped(drop), fillable(fill)
 	{
 		entity_type = ITEM;
+		damage = dmg;
+
 		picked = false;
 
 		if (craft_item != nullptr)

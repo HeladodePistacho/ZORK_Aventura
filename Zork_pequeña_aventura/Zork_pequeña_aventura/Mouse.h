@@ -4,7 +4,7 @@
 #include "Creature.h"
 #include "entity.h"
 #include "dinamic_array.h"
-#include <Windows.h>
+
 
 class Mouse : public creature
 {
@@ -21,7 +21,7 @@ public:
 	Mouse(const char* nam, const char* des, entity* initial_room, dynamic_array<entity*> entities_vector) : creature(nam, des, initial_room), ent(entities_vector)
 	{
 		last_room_visited = nullptr;
-		entity_type = CREATURE;
+		entity_type = PASSIVE_NPC;
 	}
 
 	void Move();

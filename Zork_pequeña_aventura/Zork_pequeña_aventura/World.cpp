@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Rooms.h"
 #include "Mouse.h"
+#include "Spider.h"
 #include "Creature.h"
 #include "Items.h"
 #include <stdio.h>
@@ -16,20 +17,20 @@ void World::CreateWorld()
 	
 
 	//ITEMS	
-	item* PoweredHook = new item("PoweredHook", "This awesome improved hook will help you to reach the wardrobe roof", false, false, nullptr, nullptr);
-	item* NutsGunLoaded = new item("NutsGunLoaded", "Fully reloaded and ready to shoot", false, false, nullptr, nullptr);
-	item* Catapult = new item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, false, nullptr, nullptr);
-	item* FireNeedle = new item("FireNeedle", "Improved needle with a incandescent needle tip, it is a super awesome weapon", false, false,  nullptr, nullptr);
-	item* NutsGun = new item("NutsGun", "This powerfull weapon is perfect to fight from distance, but you have no ammo", false, false, NutsGunLoaded, nullptr);
-	item* Hook = new item("Hook", "This hook will help you to reach higher positions", false, false,  PoweredHook, nullptr);
-	item* BlueWire = new item("PenWire", "A elastic wire that can be used to create new items", true, false,  NutsGun, PoweredHook);
-	item* BlackPlastic = new item("BlackPlastic", "This plastic have been used as a blowgun", true, false,  NutsGun, nullptr);
-	item* Shoelace = new item("Shoelace", "This item is usefull to craft recheable items", true, false,  Hook, Catapult);
-	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, false,  Hook, FireNeedle);
-	item* MouseTrap = new item("MouseTrap", "Seems that the cheese have been eaten, but the mouse is still alive", true, false,  Catapult, nullptr);
-	item* Nuts = new item("Nuts", "A delicious snack for humans", true, false,  NutsGunLoaded, nullptr);
-	item* Matchstick = new item("Matchstick", "A usefull matchstick that can provide light and heat", true, false,  FireNeedle, nullptr);
-	item* Box = new item("Box", "This box can store items", true, true,  nullptr, nullptr);
+	item* PoweredHook = new item("PoweredHook", "This awesome improved hook will help you to reach the wardrobe roof", false, false, nullptr, nullptr, 2);
+	item* NutsGunLoaded = new item("NutsGunLoaded", "Fully reloaded and ready to shoot", false, false, nullptr, nullptr, 7);
+	item* Catapult = new item("Catapult", "Perfect to reach the wardrobe roof, you should find a clear place to use it", false, false, nullptr, nullptr, 2);
+	item* FireNeedle = new item("FireNeedle", "Improved needle with a incandescent needle tip, it is a super awesome weapon", false, false,  nullptr, nullptr, 10);
+	item* NutsGun = new item("NutsGun", "This powerfull weapon is perfect to fight from distance, but you have no ammo", false, false, NutsGunLoaded, NutsGunLoaded, 0);
+	item* Hook = new item("Hook", "This hook will help you to reach higher positions", false, false,  PoweredHook, PoweredHook, 1);
+	item* BlueWire = new item("PenWire", "A elastic wire that can be used to create new items", true, false,  NutsGun, PoweredHook, 0);
+	item* BlackPlastic = new item("BlackPlastic", "This plastic have been used as a blowgun", true, false,  NutsGun, NutsGun, 0);
+	item* Shoelace = new item("Shoelace", "This item is usefull to craft recheable items", true, false,  Hook, Catapult, 0);
+	item* Needle = new item("Needle", "A sharp needle, that can be a nice weapon", true, false,  Hook, FireNeedle, 5);
+	item* MouseTrap = new item("MouseTrap", "Seems that the cheese have been eaten, but the mouse is still alive", true, false,  Catapult, Catapult, 0);
+	item* Nuts = new item("Nuts", "A delicious snack for humans", true, false,  NutsGunLoaded, nullptr, 0);
+	item* Matchstick = new item("Matchstick", "A usefull matchstick that can provide light and heat", true, false, FireNeedle, FireNeedle, 0);
+	item* Box = new item("Box", "This box can store items", true, true,  nullptr, nullptr, 0);
 	
 	entities.push_back(PoweredHook);
 	entities.push_back(NutsGunLoaded);
@@ -107,13 +108,14 @@ void World::CreateWorld()
 	//PLAYER
 	player = new Player("", "", Desk, 2);
 
-
+	//CREATURES
 	entities.push_back(new Mouse("Mouse", "", MouseCave, entities));
+	entities.push_back(new Spider("Spider", "", AboveWardrobe, player));
 
 	my_string dir("north south west east up down n s w e");
 	dir.tokenize(" ", directions);
 	
-	my_string com("exit help look go open close pick drop inventory inv i equip unequip put into get from combine");
+	my_string com("exit help look go open close pick drop inventory inv i equip unequip put into get from combine attack time");
 	com.tokenize(" ", comands);
 	
 }
@@ -243,6 +245,15 @@ void World::action(const dynamic_array<char*>& divided_action)
 	{
 		player->combine(entities);
 	}
+
+	//ATTACK	
+	if (divided_action.compare(comands, 18))
+	{
+		player->attack(entities, divided_action);
+	}
+
+	
+	
 }
 
 

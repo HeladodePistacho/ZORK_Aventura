@@ -1,9 +1,11 @@
 
 #include "Player.h"
+#include "Clock.h"
 
 //This prints the room name and the description of where you are, and it's exits directions
 void Player::looking(const dynamic_array<entity*>& entities) const
 {
+
 	bool no_items = true;
 	printf("%s\n", creature_room->name);
 	printf("%s\n", creature_room->description);
@@ -413,35 +415,80 @@ void Player::combine(const dynamic_array<entity*>& entities)
 	if (equiped.get_size() == 2)
 	{
 
-		if (equiped.vector[0]->list.first_node->data == equiped.vector[1]->list.first_node->data || equiped.vector[0]->list.first_node->data == equiped.vector[1]->list.first_node->next->data)
+		if (equiped.vector[0]->list.first_node != nullptr)
 		{
-			printf("You created the %s\n", equiped.vector[0]->list.first_node->data->name.c_str());
-			equiped.pop_back(poped);
-			equiped.push_front(equiped.vector[0]->list.first_node->data);
-			equiped.pop_back(poped);
-			equiped.vector[0]->Change_extra_info(ITEM_PICK);
-		}
-
-		else {
-			if (equiped.vector[0]->list.first_node->next->data == equiped.vector[1]->list.first_node->data || equiped.vector[0]->list.first_node->next->data == equiped.vector[1]->list.first_node->next->data)
+			if (equiped.vector[1]->list.first_node != nullptr && equiped.vector[0]->list.first_node->data == equiped.vector[1]->list.first_node->data)
 			{
-				printf("You created the %s\n", equiped.vector[0]->list.first_node->next->next->data->name.c_str());
+				printf("You created the %s\n", equiped.vector[0]->list.first_node->data->name.c_str());
 				equiped.pop_back(poped);
 				equiped.push_front(equiped.vector[0]->list.first_node->data);
 				equiped.pop_back(poped);
 				equiped.vector[0]->Change_extra_info(ITEM_PICK);
 			}
 
+			else if (equiped.vector[1]->list.first_node->next != nullptr && equiped.vector[0]->list.first_node->data == equiped.vector[1]->list.first_node->next->data)
+			{
+				printf("You created the %s\n", equiped.vector[0]->list.first_node->data->name.c_str());
+				equiped.pop_back(poped);
+				equiped.push_front(equiped.vector[0]->list.first_node->data);
+				equiped.pop_back(poped);
+				equiped.vector[0]->Change_extra_info(ITEM_PICK);
+			}
 		}
-	}
-	else printf("You will need one more item to combine\n");
 
-	if (poped == nullptr)
-	{
-		printf("You cant' combine this items\n");
-	}
+		if (equiped.vector[0]->list.first_node->next != nullptr)
+		{
+			if (equiped.vector[1]->list.first_node != nullptr && equiped.vector[0]->list.first_node->next->data == equiped.vector[1]->list.first_node->data)
+			{
+				printf("You created the %s\n", equiped.vector[0]->list.first_node->next->data->name.c_str());
+				equiped.pop_back(poped);
+				equiped.push_front(equiped.vector[0]->list.first_node->next->data);
+				equiped.pop_back(poped);
+				equiped.vector[0]->Change_extra_info(ITEM_PICK);
+			}
 
+			else if (equiped.vector[1]->list.first_node->next != nullptr && equiped.vector[0]->list.first_node->next->data == equiped.vector[1]->list.first_node->next->data)
+			{
+				printf("You created the %s\n", equiped.vector[0]->list.first_node->next->data->name.c_str());
+				equiped.pop_back(poped);
+				equiped.push_front(equiped.vector[0]->list.first_node->next->data);
+				equiped.pop_back(poped);
+				equiped.vector[0]->Change_extra_info(ITEM_PICK);
+			}
+		}
+
+
+		if (poped == nullptr)
+		{
+			printf("You cant' combine this items\n");
+		}
+
+	}
 }
 
+bool Player::is_dead() const
+{
+	return life <= 0;	
+}
 
+void Player::attack(const dynamic_array<entity*>& entities, const dynamic_array<char*>& divided_action) const
+{
+	bool creature_here = false;
+
+	for (int i = 0; i < entities.get_size(); i++)
+	{
+		if ((entities[i]->entity_type == SPIDER || entities[i]->entity_type == BUG) && entities[i]->list.first_node->data == creature_room && entities[i]->name == divided_action[1])
+		{
+			entities[i]->life -= damage;
+			printf("You deal %i damage to %s\n", damage, entities[i]->name.c_str());
+			creature_here = true;
+		}
+		
+	}
+
+	if (!creature_here)
+		printf("This creature is not here\n");
+
+
+}
 
